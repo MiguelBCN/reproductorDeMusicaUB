@@ -12,8 +12,8 @@ public class ExempleStream {
 // En Linux
         //File fitxer = new File("~/Reproductor/BibliotecaMusical.txt ");
 // Obrir un Stream d’entrada des del fitxer
-        FileInputStream fin = new FileInputStream(fitxer);
+        //FileInputStream fin = new FileInputStream(fitxer);
 // Obrir un Stream de sortida cap al fitxer
-        FileOutputStream fout = new FileOutputStream(fitxer);
+       //FileOutputStream fout = new FileOutputStream(fitxer);
     }
 }
