@@ -1,4 +1,4 @@
-package ub.info.prog2.solucio.vista;
+
 
 // package ...;
 
