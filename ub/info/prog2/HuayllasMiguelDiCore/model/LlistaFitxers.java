@@ -1,4 +1,5 @@
 package ub.info.prog2.HuayllasMiguelDiCore.model;
+import org.w3c.dom.ls.LSOutput;
 import ub.info.prog2.utils.InFileList;
 import ub.info.prog2.utils.ReproException;
 
@@ -9,13 +10,13 @@ import java.util.ArrayList;
 
 public class LlistaFitxers implements InFileList {
     //Creamos el ArrayList inicialmente con espacio para 100
-    ArrayList<FitxerMultimedia> ficheros;
+    ArrayList<File> ficheros;
     //Creo los 2 constructores
     public LlistaFitxers(int i){
-        ficheros=new ArrayList<FitxerMultimedia>(i);
+        ficheros=new ArrayList<File>(i);
     }
     public LlistaFitxers(){
-        ficheros=new ArrayList<FitxerMultimedia>(100);
+        ficheros=new ArrayList<File>(100);
     }
 
     @Override
@@ -25,9 +26,8 @@ public class LlistaFitxers implements InFileList {
 
     @Override
     public void addFitxer(File file) throws ReproException {
-        //ficheros.add(file);
-        FitxerMultimedia e =new FitxerMultimedia(file.toString());
-        ficheros.add(e);
+        //Add more content here
+        ficheros.add(file);
 
     }
 
@@ -35,6 +35,8 @@ public class LlistaFitxers implements InFileList {
     public void removeFitxer(File file) {
             //Aqui tendremos que usar una comparacion entre ficheros y cuando hallermos
             // el que pasamos ppor parametro lo eliminamos
+      ficheros.remove(file) ;
+
 
     }
 

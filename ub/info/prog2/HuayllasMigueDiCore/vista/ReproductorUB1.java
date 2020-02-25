@@ -1,5 +1,6 @@
 package ub.info.prog2.HuayllasMigueDiCore.vista;
 
+import ub.info.prog2.HuayllasMiguelDiCore.model.LlistaFitxers;
 import ub.info.prog2.utils.Menu;
 
 import java.util.Scanner;
@@ -17,7 +18,9 @@ public class ReproductorUB1 {
     static private enum OpcionesMeu {
         AGREGAR_FICHERO, ELIMINAR_FICHERO,
         MOSTRAR_LISTA, GUARDAR_LISTA, RECUPERAR_LISTA, SALIR
-    };
+    }
+
+    ;
 
     //Declaro las descripciones de cada menu
     static private String[] desOpcionesMenu = {
@@ -27,32 +30,43 @@ public class ReproductorUB1 {
             , "Guardar el contenido de la lista en un fichero",
             "Cargar una lista previamente guardada en un fichero",
             "Salir de la aplicacion"};
+    //Creamos el objeto lista
+    LlistaFitxers lista;
 
-    public void gestionReproductorMusica(){
-        Scanner sc =new Scanner(System.in);
+    public ReproductorUB1(int i) {
+        lista = new LlistaFitxers(i);
+    }
+
+    public ReproductorUB1() {
+        lista = new LlistaFitxers();
+    }
+
+    public void gestionReproductorMusica() {
+        Scanner sc = new Scanner(System.in);
         //Creamos el objeto Menu y le pasamos el enum con las opciones del Menu principal
-        Menu<OpcionesMeu> menu=new Menu<OpcionesMeu>("Menu Principal",OpcionesMeu.values());
+        Menu<OpcionesMeu> menu = new Menu<OpcionesMeu>("Menu Principal", OpcionesMeu.values());
 
         //Asignamos las descripciones de las opciones
         menu.setDescripcions(desOpcionesMenu);
 
         //Obtenemos las opciones del menu y hacemos las acciones pertinentes
-        OpcionesMeu opcion=null;
-        do{
+        OpcionesMeu opcion = null;
+        do {
             //Mostramos las opciones del menu
             menu.mostrarMenu();
 
             //Demandamos una opcion
-            opcion=menu.getOpcio(sc);
+            opcion = menu.getOpcio(sc);
 
             //Hacemos las acciones necesarias
-            switch (opcion){
+            switch (opcion) {
                 case AGREGAR_FICHERO:
                     System.out.println(desOpcionesMenu[0]);
-
+                    //lista.addFitxer();
                     break;
                 case ELIMINAR_FICHERO:
                     System.out.println(desOpcionesMenu[1]);
+                    //lista.removeFitxer();
                     break;
                 case MOSTRAR_LISTA:
                     System.out.println(desOpcionesMenu[2]);
@@ -65,7 +79,7 @@ public class ReproductorUB1 {
                     break;
             }
 
-        }while (opcion!=OpcionesMeu.SALIR);
+        } while (opcion != OpcionesMeu.SALIR);
 
     }
 
