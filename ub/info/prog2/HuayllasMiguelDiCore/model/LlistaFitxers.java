@@ -4,6 +4,7 @@ import ub.info.prog2.utils.ReproException;
 
 import java.io.File;
 import java.util.ArrayList;
+//AQUI SOLO IMPLEMENTAR LOS METHODOS DELA ARRAYLIST
 
 public class LlistaFitxers implements InFileList {
     @Override
@@ -22,6 +23,7 @@ public class LlistaFitxers implements InFileList {
     }
 
     @Override
+    //Retorna la posicion del ArrayList
     public File getAt(int i) {
         return null;
     }
