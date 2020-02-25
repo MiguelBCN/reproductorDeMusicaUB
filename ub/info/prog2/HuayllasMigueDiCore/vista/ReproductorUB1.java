@@ -49,6 +49,7 @@ public class ReproductorUB1 {
             switch (opcion){
                 case AGREGAR_FICHERO:
                     System.out.println(desOpcionesMenu[0]);
+
                     break;
                 case ELIMINAR_FICHERO:
                     System.out.println(desOpcionesMenu[1]);
