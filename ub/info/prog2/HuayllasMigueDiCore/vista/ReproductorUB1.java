@@ -6,14 +6,7 @@ import ub.info.prog2.utils.Menu;
 import java.util.Scanner;
 
 public class ReproductorUB1 {
-    /*OPCIONES DEL MENU
-    1.Afegir fitxer multimèdia:
-2. Eliminar fitxer multimèdia.
-3. Mostrar llista:
-4. Guardar llista:
-5. Recuperar llista:
-6. Sortir:
-*/
+
     //Declaro la variables del menu para hacer referencia a las opciones del menu
     static private enum OpcionesMeu {
         AGREGAR_FICHERO, ELIMINAR_FICHERO,
