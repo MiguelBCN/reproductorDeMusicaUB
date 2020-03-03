@@ -43,8 +43,8 @@ public class FitxerMultimedia extends File implements InFile {
 
     @Override
     public Date getUltimaModificacio() {
-        Calendar cal= Calendar.getInstance();
-        Date fecha=new Date(cal.getTimeInMillis());
+        Calendar cal = Calendar.getInstance();
+        Date fecha = new Date(cal.getTimeInMillis());
         return fecha;
     }
 
@@ -66,7 +66,7 @@ public class FitxerMultimedia extends File implements InFile {
 
     @Override
     public void setAutor(String s) {
-        this.author=s;
+        this.author = s;
 
     }
 }

@@ -22,8 +22,9 @@ public class ReproductorUB1 {
             , "Guardar el contenido de la lista en un fichero",
             "Cargar una lista previamente guardada en un fichero",
             "Salir de la aplicacion"};
-    //Creamos el objeto lista
-    LlistaFitxers lista=null;
+
+    //Creamos el objeto lista vacio en principio
+    LlistaFitxers lista = null;
 
     public ReproductorUB1(int i) {
         lista = new LlistaFitxers(i);
@@ -35,6 +36,7 @@ public class ReproductorUB1 {
 
     public void gestionReproductorMusica() {
         Scanner sc = new Scanner(System.in);
+        Scanner sc2= new Scanner(System.in);
         String rutaArchivo;
         //Creamos el objeto Menu y le pasamos el enum con las opciones del Menu principal
         Menu<OpcionesMenu> menu = new Menu<OpcionesMenu>("Menu Principal", OpcionesMenu.values());
@@ -56,7 +58,7 @@ public class ReproductorUB1 {
                 case AGREGAR_FICHERO:
                     System.out.println(desOpcionesMenu[0]);
                     if (!lista.isFull()) {
-                        System.out.println("Cual es el path del file que quieres añadir?");  //ADDED
+                        System.out.println("Cual es el path del file que quieres añadir?");
                         File add = new File(sc.nextLine());
                         lista.addFitxer(add);
                     } else
@@ -64,31 +66,63 @@ public class ReproductorUB1 {
                     break;
                 case ELIMINAR_FICHERO:
                     System.out.println(desOpcionesMenu[1]);
-                    System.out.println("Cual es el path del file que quieres eliminar?");  //MODIFIED
+                    System.out.println("Cual es el path del file que quieres eliminar?");
                     File del = new File(sc.nextLine());
                     lista.removeFitxer(del);
                     break;
                 case MOSTRAR_LISTA:
                     System.out.println(desOpcionesMenu[2]);
-                    System.out.println(lista);
+                    lista.toString();
                     break;
                 case GUARDAR_LISTA:
                     System.out.println(desOpcionesMenu[3]);
                     //Pedir al usuario donde se guardara
                     System.out.println("Donde desea guardar el archivo?");
-                    rutaArchivo=sc.next();
-                    File file=new File(rutaArchivo);
+                    rutaArchivo = sc.next();
+                    //Declaro los objetos necesarios para guardar la lista en un fichero
+                    File file = null;
+                    FileOutputStream fos = null;
+                    ObjectOutputStream ous = null;
                     //Crear la conexion
-                    try  {
-                        FileOutputStream fos=new FileOutputStream(file);
-                        ObjectOutputStream ous= new ObjectOutputStream(fos);
-                        ous.writeObject(lista);
+                    try {
+                        //Comprobamos si el archivo existe y si se desea sobreescribi
+                        file = new File(rutaArchivo);
+                        if (file.exists()) {
+                            System.out.println("El archivo ya existe desea sobreescribirlo Y/N");
+                            String op=sc2.nextLine();
+                            System.out.println(op);
+                            if (op == "Y" || op=="y") {
 
-                        fos.close();
-                        ous.close();
-                        System.out.println("La lista se a guardado correctamente en "+rutaArchivo);
+                                fos = new FileOutputStream(file);
+                                ous = new ObjectOutputStream(fos);
+                                ous.writeObject(lista);
 
-                    }catch (IOException e) {
+                                //Cierro los objetos y doy un mensaje de confirmacion al usuario
+                                fos.close();
+                                ous.close();
+                                System.out.println("La lista se a guardado correctamente en " + rutaArchivo);
+                                System.out.println("Creando el archivo");
+
+                            } else if (op == "N") {
+                                System.out.println("Entendido no se sobreescribira");
+
+                            } else
+                                System.out.println("Opcion no valida");
+
+                        } else {
+
+                            fos = new FileOutputStream(file);
+                            ous = new ObjectOutputStream(fos);
+                            ous.writeObject(lista);
+
+                            //Cierro los objetos y doy un mensaje de confirmacion al usuario
+                            fos.close();
+                            ous.close();
+                            System.out.println("La lista se a guardado correctamente en " + rutaArchivo);
+                            System.out.println("Creando el archivo");
+                        }
+
+                    } catch (IOException e) {
                         e.printStackTrace();
                     }
                     break;
@@ -96,25 +130,40 @@ public class ReproductorUB1 {
                     System.out.println(desOpcionesMenu[4]);
                     //Pedir al usuario el archivo desde el cual vamos a recuperar
                     System.out.println("Introduzca al ruta del archivo del cual quiere recuperar la lista");
-                    rutaArchivo=sc.next();
-                    try{
+                    rutaArchivo = sc.next();
+                    try {
                         //Hay otro file tambien en GUARDAR
-                        file=new File(rutaArchivo);
-                        FileInputStream fis=new FileInputStream(file);
-                        ObjectInputStream ois=new ObjectInputStream(fis);
+                        file = new File(rutaArchivo);
+                        FileInputStream fis = new FileInputStream(file);
+                        ObjectInputStream ois = new ObjectInputStream(fis);
 
                         //Creamos el objeto donde cargamos el archivo
-                        Object one=ois.readObject();
+                        Object one = ois.readObject();
                         System.out.println(one);
                         fis.close();
                         ois.close();
-                    }catch(IOException | ClassNotFoundException e){e.printStackTrace();}
+                    } catch (IOException | ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
                     break;
             }
 
         } while (opcion != OpcionesMenu.SALIR);
 
     }
+//Este metodo tenia la finalidad de reducir las lineas
+    /*private void guardarLista(File file, String rutaArchivo, FileOutputStream fos, ObjectOutputStream ous) {
+        file = new File(rutaArchivo);
+        fos = new FileOutputStream(file);
+        ous = new ObjectOutputStream(fos);
+        ous.writeObject(lista);
+
+        //Cierro los objetos y doy un mensaje de confirmacion al usuario
+        fos.close();
+        ous.close();
+        System.out.println("La lista se a guardado correctamente en " + rutaArchivo);
+        System.out.println("Creando el archivo");
+    }*/
 
 
 }

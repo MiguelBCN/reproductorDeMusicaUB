@@ -8,7 +8,6 @@ import java.io.File;
 import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
-//AQUI SOLO IMPLEMENTAR LOS METHODOS DELA ARRAYLIST
 
 public class LlistaFitxers implements InFileList, Serializable {
     //Creamos el ArrayList inicialmente con espacio para 100
@@ -64,6 +63,7 @@ public class LlistaFitxers implements InFileList, Serializable {
 
     @Override
     public boolean isFull() {
+        //Creo te daba error porque el total size es 100 mientras el size() era menor
         if (ficheros.size() < totalSize)
             return false;
         return true;
