@@ -36,7 +36,6 @@ public class ReproductorUB1 {
 
     public void gestionReproductorMusica() {
         Scanner sc = new Scanner(System.in);
-        Scanner sc2= new Scanner(System.in);
         String rutaArchivo;
         //Creamos el objeto Menu y le pasamos el enum con las opciones del Menu principal
         Menu<OpcionesMenu> menu = new Menu<OpcionesMenu>("Menu Principal", OpcionesMenu.values());
@@ -72,7 +71,7 @@ public class ReproductorUB1 {
                     break;
                 case MOSTRAR_LISTA:
                     System.out.println(desOpcionesMenu[2]);
-                    lista.toString();
+                    System.out.println(lista.toString());
                     break;
                 case GUARDAR_LISTA:
                     System.out.println(desOpcionesMenu[3]);
@@ -83,15 +82,16 @@ public class ReproductorUB1 {
                     File file = null;
                     FileOutputStream fos = null;
                     ObjectOutputStream ous = null;
+
                     //Crear la conexion
                     try {
                         //Comprobamos si el archivo existe y si se desea sobreescribi
                         file = new File(rutaArchivo);
                         if (file.exists()) {
                             System.out.println("El archivo ya existe desea sobreescribirlo Y/N");
-                            String op=sc2.nextLine();
+                            String op=sc.next();
                             System.out.println(op);
-                            if (op == "Y" || op=="y") {
+                            if (op.equals("Y") || op.equals("y") ) {
 
                                 fos = new FileOutputStream(file);
                                 ous = new ObjectOutputStream(fos);
@@ -100,17 +100,17 @@ public class ReproductorUB1 {
                                 //Cierro los objetos y doy un mensaje de confirmacion al usuario
                                 fos.close();
                                 ous.close();
-                                System.out.println("La lista se a guardado correctamente en " + rutaArchivo);
-                                System.out.println("Creando el archivo");
+                                System.out.println("Se ha sobreescrito el archivo " + rutaArchivo);
 
-                            } else if (op == "N") {
+                            } else if (op.equals("N") || op.equals("n") ) {
                                 System.out.println("Entendido no se sobreescribira");
 
-                            } else
+                            } else{
                                 System.out.println("Opcion no valida");
+                                System.out.println(op);}
 
                         } else {
-
+                            //Si el objeto no existe en el sistema lo creamos
                             fos = new FileOutputStream(file);
                             ous = new ObjectOutputStream(fos);
                             ous.writeObject(lista);
@@ -118,8 +118,9 @@ public class ReproductorUB1 {
                             //Cierro los objetos y doy un mensaje de confirmacion al usuario
                             fos.close();
                             ous.close();
-                            System.out.println("La lista se a guardado correctamente en " + rutaArchivo);
                             System.out.println("Creando el archivo");
+                            System.out.println("La lista se a guardado correctamente en " + rutaArchivo);
+
                         }
 
                     } catch (IOException e) {
@@ -132,22 +133,26 @@ public class ReproductorUB1 {
                     System.out.println("Introduzca al ruta del archivo del cual quiere recuperar la lista");
                     rutaArchivo = sc.next();
                     try {
-                        //Hay otro file tambien en GUARDAR
+                        //Comprobamos que el archivo exista
                         file = new File(rutaArchivo);
-                        FileInputStream fis = new FileInputStream(file);
-                        ObjectInputStream ois = new ObjectInputStream(fis);
+                        if (file.exists()){
+                            FileInputStream fis = new FileInputStream(file);
+                            ObjectInputStream ois = new ObjectInputStream(fis);
 
-                        //Creamos el objeto donde cargamos el archivo
-                        Object one = ois.readObject();
-                        System.out.println(one);
-                        fis.close();
-                        ois.close();
+                            //Creamos el objeto donde cargamos el archivo
+                            Object one = ois.readObject();
+                            System.out.println(one);
+                            fis.close();
+                            ois.close();
+                            //Hacemos un cast del objeto cargado y le acoplamos un alias (lista)
+                            lista=(LlistaFitxers)one;
+                        }else
+                            System.out.println("El archivo no existe en tu computadora");
                     } catch (IOException | ClassNotFoundException e) {
                         e.printStackTrace();
                     }
                     break;
             }
-
         } while (opcion != OpcionesMenu.SALIR);
 
     }
