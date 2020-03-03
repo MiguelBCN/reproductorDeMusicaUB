@@ -18,7 +18,7 @@ public class ExempleStream {
         //Gestion
         ObjectOutputStream oos = new ObjectOutputStream(fout);
         ObjectInputStream ois = new ObjectInputStream(fin);*/
-        /*try (FileInputStream fis = new FileInputStream(fitxer)) {
+        try (FileInputStream fis = new FileInputStream("fitxer")) {
 
             System.out.println("Total file size to read (in bytes) : "+ fis.available());
 
@@ -30,7 +30,7 @@ public class ExempleStream {
 
         } catch (IOException e) {
             e.printStackTrace();
-        }*/
+        }
 
     }
 }

@@ -3,25 +3,16 @@ package ub.info.prog2.HuayllasMigueDiCore.vista;
 import ub.info.prog2.HuayllasMiguelDiCore.model.LlistaFitxers;
 import ub.info.prog2.utils.Menu;
 
+import java.io.*;
 import java.util.Scanner;
-import java.io.File;  //ADDED
 
 public class ReproductorUB1 {
-    /*OPCIONES DEL MENU
-    1.Afegir fitxer multimèdia:
-2. Eliminar fitxer multimèdia.
-3. Mostrar llista:
-4. Guardar llista:
-5. Recuperar llista:
-6. Sortir:
-*/
+
     //Declaro la variables del menu para hacer referencia a las opciones del menu
     static private enum OpcionesMenu {  //SWITCHED FROM "OpcionesMenu" TO "OpcionesMenu" (las otras referencias tambien)
         AGREGAR_FICHERO, ELIMINAR_FICHERO,
         MOSTRAR_LISTA, GUARDAR_LISTA, RECUPERAR_LISTA, SALIR
     }
-
-    ;
 
     //Declaro las descripciones de cada menu
     static private String[] desOpcionesMenu = {
@@ -32,7 +23,7 @@ public class ReproductorUB1 {
             "Cargar una lista previamente guardada en un fichero",
             "Salir de la aplicacion"};
     //Creamos el objeto lista
-    LlistaFitxers lista;
+    LlistaFitxers lista=null;
 
     public ReproductorUB1(int i) {
         lista = new LlistaFitxers(i);
@@ -44,6 +35,7 @@ public class ReproductorUB1 {
 
     public void gestionReproductorMusica() {
         Scanner sc = new Scanner(System.in);
+        String rutaArchivo;
         //Creamos el objeto Menu y le pasamos el enum con las opciones del Menu principal
         Menu<OpcionesMenu> menu = new Menu<OpcionesMenu>("Menu Principal", OpcionesMenu.values());
 
@@ -63,11 +55,11 @@ public class ReproductorUB1 {
             switch (opcion) {
                 case AGREGAR_FICHERO:
                     System.out.println(desOpcionesMenu[0]);
-                    if(!lista.isFull()){
+                    if (!lista.isFull()) {
                         System.out.println("Cual es el path del file que quieres añadir?");  //ADDED
                         File add = new File(sc.nextLine());
-                        lista.addFitxer(add);}
-                    else
+                        lista.addFitxer(add);
+                    } else
                         System.out.println("List is full. You must delete some files before you can add some");
                     break;
                 case ELIMINAR_FICHERO:
@@ -82,9 +74,41 @@ public class ReproductorUB1 {
                     break;
                 case GUARDAR_LISTA:
                     System.out.println(desOpcionesMenu[3]);
+                    //Pedir al usuario donde se guardara
+                    System.out.println("Donde desea guardar el archivo?");
+                    rutaArchivo=sc.next();
+                    File file=new File(rutaArchivo);
+                    //Crear la conexion
+                    try  {
+                        FileOutputStream fos=new FileOutputStream(file);
+                        ObjectOutputStream ous= new ObjectOutputStream(fos);
+                        ous.writeObject(lista);
+
+                        fos.close();
+                        ous.close();
+                        System.out.println("La lista se a guardado correctamente en "+rutaArchivo);
+
+                    }catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     break;
                 case RECUPERAR_LISTA:
                     System.out.println(desOpcionesMenu[4]);
+                    //Pedir al usuario el archivo desde el cual vamos a recuperar
+                    System.out.println("Introduzca al ruta del archivo del cual quiere recuperar la lista");
+                    rutaArchivo=sc.next();
+                    try{
+                        //Hay otro file tambien en GUARDAR
+                        file=new File(rutaArchivo);
+                        FileInputStream fis=new FileInputStream(file);
+                        ObjectInputStream ois=new ObjectInputStream(fis);
+
+                        //Creamos el objeto donde cargamos el archivo
+                        Object one=ois.readObject();
+                        System.out.println(one);
+                        fis.close();
+                        ois.close();
+                    }catch(IOException | ClassNotFoundException e){e.printStackTrace();}
                     break;
             }
 
