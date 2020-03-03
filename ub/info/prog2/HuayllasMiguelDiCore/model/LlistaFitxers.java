@@ -11,12 +11,15 @@ import java.util.ArrayList;
 public class LlistaFitxers implements InFileList {
     //Creamos el ArrayList inicialmente con espacio para 100
     ArrayList<File> ficheros;
+    int totalSize;
     //Creo los 2 constructores
     public LlistaFitxers(int i){
-        ficheros=new ArrayList<File>(i);
+        totalSize=i;
+        ficheros=new ArrayList<File>(totalSize);
     }
     public LlistaFitxers(){
-        ficheros=new ArrayList<File>(100);
+        totalSize = 100;
+        ficheros=new ArrayList<File>(totalSize);
     }
 
     @Override
@@ -25,17 +28,23 @@ public class LlistaFitxers implements InFileList {
     }
 
     @Override
-    public void addFitxer(File file) throws ReproException {
-        //Add more content here
-        ficheros.add(file);
-
+    public void addFitxer(File file){// throws ReproException { ADDED
+        if(file.exists()){
+            if(!ficheros.contains(file)){
+                ficheros.add(file);
+                System.out.println("\nFile added correctly\n");}
+            else
+                System.out.println("\nFile already present\n");}
+        else
+            System.out.println("\nError 404, file not found\n");
     }
 
     @Override
-    public void removeFitxer(File file) {
+    public void removeFitxer(File file) {  //ADDED
             //Aqui tendremos que usar una comparacion entre ficheros y cuando hallermos
             // el que pasamos ppor parametro lo eliminamos
       ficheros.remove(file) ;
+      System.out.println("\nFile deleted correctly\n");
 
 
     }
@@ -53,12 +62,19 @@ public class LlistaFitxers implements InFileList {
 
     @Override
     public boolean isFull() {
+        if(ficheros.size()<totalSize)
+            return true;
         return false;
     }
 
-    //public toString(){}
+    //public String toString(){}
 
-    //public mostrarFichero(){}
+    public String toString(){ // ADDED
+        StringBuffer temp = new StringBuffer("");
+        for (int y=0; y<ficheros.size(); y++)
+            temp.append((y+1)+".  "+ficheros.get(y).getName()+"\n");
+        String returnString = temp.toString();
+        return returnString;}
+    
 }
-
 
