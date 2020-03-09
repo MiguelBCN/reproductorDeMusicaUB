@@ -1,19 +1,16 @@
 package ub.info.prog2.HuayllasMiguelDiCore.model;
 
-import org.w3c.dom.ls.LSOutput;
 import ub.info.prog2.utils.InFileList;
-import ub.info.prog2.utils.ReproException;
-
+import java.util.Scanner;
 import java.io.File;
 import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
+import ub.info.prog2.utils.ReproException;
 
 public class LlistaFitxers implements InFileList, Serializable {
     //Creamos el ArrayList inicialmente con espacio para 100
     ArrayList<File> ficheros;
     int totalSize;
-
     //Creo los 2 constructores
     public LlistaFitxers(int i) {
         totalSize = i;
@@ -30,24 +27,35 @@ public class LlistaFitxers implements InFileList, Serializable {
         return ficheros.size();
     }
 
-    @Override
-    public void addFitxer(File file) {// throws ReproException { ADDED
+    public void addFitxer(File file) throws ReproException {
         if (file.exists()) {
-            if (!ficheros.contains(file)) {
-                ficheros.add(file);
-                System.out.println("\nFile added correctly\n");
-            } else
-                System.out.println("\nFile already present\n");
+            Scanner sc = new Scanner(System.in);
+            FitxerMultimedia temp;
+            System.out.println("\nDo you want to add an author? Y/N\n");
+            String answer = sc.nextLine();
+            if (answer.equals("Y") || answer.equals("y") ){
+                System.out.println("\nWright thee name of the author\n");
+                String a = sc.nextLine();
+                temp = new FitxerMultimedia(file.getAbsolutePath(), a);
+            }else
+                temp = new FitxerMultimedia(file.getAbsolutePath());
+            ficheros.add(temp);
+            System.out.println("\nFile "+temp+" added correctly\n");
         } else
-            System.out.println("\nError 404, file not found\n");
+            throw new ReproException ("File Already Present");
     }
 
-    @Override
     public void removeFitxer(File file) {
         //Aqui tendremos que usar una comparacion entre ficheros y cuando hallermos
         // el que pasamos ppor parametro lo eliminamos
-        ficheros.remove(file);
-        System.out.println("\nFile deleted correctly\n");
+        if (file.exists()) {
+            if (ficheros.contains(file)) {
+                ficheros.remove(file);
+                System.out.println("\nFile deleted correctly\n");
+            } else
+                System.out.println("\nError 404, file not found\n");
+        } else
+            System.out.println("\nError 404, file not found\n");
     }
 
     @Override
@@ -69,14 +77,8 @@ public class LlistaFitxers implements InFileList, Serializable {
         return true;
     }
 
-
-    public String toString() { // ADDED
-        StringBuffer temp = new StringBuffer("");
-        for (int y = 0; y < ficheros.size(); y++)
-            temp.append((y + 1) + ".  " + ficheros.get(y).getName() + "\n");
-        String returnString = temp.toString();
-        return returnString;
+    public String toString() {
+        return "";
     }
-
 }
 

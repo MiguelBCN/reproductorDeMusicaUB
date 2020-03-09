@@ -1,10 +1,8 @@
 package ub.info.prog2.HuayllasMiguelDiCore.model;
 
 import ub.info.prog2.utils.InFile;
-
 import java.io.File;
 import java.util.Date;
-import java.util.Calendar;
 
 public class FitxerMultimedia extends File implements InFile {
     //Esta subclase de File sera el que usemos para gestionar los ficheros del reprodutor
@@ -13,17 +11,12 @@ public class FitxerMultimedia extends File implements InFile {
     public FitxerMultimedia(String path) {
         super(path);
         this.author = "Desconocido";
-
     }
 
     public FitxerMultimedia(String path, String author) {
         super(path);
         this.author = author;
     }
-
-
-    //public String toString(){}
-
 
     //Object obj hace referenci al tipo generico de objetos lo usamos porque el usuario puede pasar cualquier cosa
     public boolean equals(Object obj) {
@@ -37,15 +30,12 @@ public class FitxerMultimedia extends File implements InFile {
             other = (FitxerMultimedia) obj;
         //finalmente hacemos la comparacion
         return this.getAutor().equals(other.getAutor()) && super.equals(other);
-
-
     }
 
     @Override
     public Date getUltimaModificacio() {
-        Calendar cal = Calendar.getInstance();
-        Date fecha = new Date(cal.getTimeInMillis());
-        return fecha;
+        Date lastMod = new Date(this.lastModified());
+        return lastMod;
     }
 
     @Override
@@ -63,10 +53,15 @@ public class FitxerMultimedia extends File implements InFile {
         return this.author;
     }
 
-
     @Override
     public void setAutor(String s) {
         this.author = s;
+    }
 
+    public String toString(){
+        String returnString = new String("Autor= "+this.getAutor()+", data="+
+                this.getUltimaModificacio()+", cami complet="+this.getCamiAbsolut());
+        return returnString;
     }
 }
+
