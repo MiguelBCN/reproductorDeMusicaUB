@@ -21,10 +21,6 @@ public class FitxerMultimedia extends File implements InFile {
         this.author = author;
     }
 
-
-    //public String toString(){}
-
-
     //Object obj hace referenci al tipo generico de objetos lo usamos porque el usuario puede pasar cualquier cosa
     public boolean equals(Object obj) {
         //Sea cualquiera el objeto si esta vacio(solo incializado) devolver false

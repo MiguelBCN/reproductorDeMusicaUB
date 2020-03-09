@@ -36,6 +36,7 @@ public class LlistaFitxers implements InFileList, Serializable {
             if (!ficheros.contains(file)) {
                 ficheros.add(file);
                 System.out.println("\nFile added correctly\n");
+
             } else
                 System.out.println("\nFile already present\n");
         } else

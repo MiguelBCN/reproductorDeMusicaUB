@@ -72,6 +72,7 @@ public class ReproductorUB1 {
                 case MOSTRAR_LISTA:
                     System.out.println(desOpcionesMenu[2]);
                     System.out.println(lista.toString());
+
                     break;
                 case GUARDAR_LISTA:
                     System.out.println(desOpcionesMenu[3]);
@@ -135,7 +136,7 @@ public class ReproductorUB1 {
                     try {
                         //Comprobamos que el archivo exista
                         file = new File(rutaArchivo);
-                        if (file.exists()){
+                        if (file.getAbsoluteFile().exists()){
                             FileInputStream fis = new FileInputStream(file);
                             ObjectInputStream ois = new ObjectInputStream(fis);
 
@@ -146,6 +147,7 @@ public class ReproductorUB1 {
                             ois.close();
                             //Hacemos un cast del objeto cargado y le acoplamos un alias (lista)
                             lista=(LlistaFitxers)one;
+                            System.out.println("Se recupero la lista correctamente");
                         }else
                             System.out.println("El archivo no existe en tu computadora");
                     } catch (IOException | ClassNotFoundException e) {
