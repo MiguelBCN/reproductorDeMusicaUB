@@ -1,4 +1,4 @@
-package ub.info.prog2.HuayllasMigueDiCore.vista;
+package ub.info.prog2.HuayllasMiguelDiCroce.vista;
 
 
 /**
@@ -15,6 +15,6 @@ public class IniciadorAplicacioUB {
     public static void main(String[] args) {
         // Inicialitzarem repro com a un new ReproductorUB1() (tamany 100)
         ReproductorUB1 repro = new ReproductorUB1();
-        repro.gestionReproductorMusica();
+        //repro.gestionReproductorMusica();
     }
 }

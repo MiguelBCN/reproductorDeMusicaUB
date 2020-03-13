@@ -1,4 +1,4 @@
-package ub.info.prog2.HuayllasMiguelDiCore.model;
+package ub.info.prog2.HuayllasMiguelDiCroce.model;
 
 import ub.info.prog2.utils.InFileList;
 
