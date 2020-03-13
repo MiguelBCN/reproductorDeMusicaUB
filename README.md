@@ -8,3 +8,7 @@
 </ul>
 <p>Yo uso otro ide diferente a netbeans por eso solo te paso esta parte del codigo , tuj tendras que ademas de esto descargar y poner la libreria en el tuyo </p>
 <p>Cualquier duda contactame</p>
+<ul>
+<li>Primera entrega</li>
+<li>https://github.com/MiguelBCN/reproductorDeMusicaUB/commit/596966dedaf325990d1d896ba4fa83c0f305fe1a</li>
+</ul>
