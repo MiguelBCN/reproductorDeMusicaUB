@@ -1,9 +1,12 @@
 package ub.info.prog2.HuayllasMiguelDiCroce.model;
 
+import ub.info.prog2.HuayllasMiguelDiCroce.controlador.Motor;
 import ub.info.prog2.utils.InFile;
+import ub.info.prog2.utils.ReproException;
 
 import java.io.File;
 import java.util.Date;
+
 
 
 /**
@@ -12,8 +15,11 @@ import java.util.Date;
  *
  * @author Miguel Huayllas and Luca Eric Di Croce
  */
-public class FitxerMultimedia extends File implements InFile {
+public abstract class FitxerMultimedia extends File implements InFile {
     String author;
+    String codec;
+    float durada;
+    Motor motor;
 
     /**
      * @param path del file que es vol afegir
@@ -31,6 +37,14 @@ public class FitxerMultimedia extends File implements InFile {
         super(path);
         this.author = author;
     }
+    protected FitxerMultimedia (String cami, String nom, String codec, float durada, Motor motor){
+        super(cami);
+        this.author=nom;
+
+    }
+    public abstract void reproduir() throws ReproException;
+
+
 
     /**
      * @param obj que es vol comparar amb el FitxerMultimedia
@@ -98,5 +112,7 @@ public class FitxerMultimedia extends File implements InFile {
                 this.getUltimaModificacio() + ", cami complet=" + this.getCamiAbsolut());
         return returnString;
     }
+
+
 }
 

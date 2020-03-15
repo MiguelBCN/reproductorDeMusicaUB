@@ -107,7 +107,7 @@ public class ReproductorUB1 {
      *
      * @param sc objeto tipo Scanner que servira para que el usuario entre por teclado las opciones del menu
      */
-    public void gestionFicheros(Scanner sc) {
+    private void gestionFicheros(Scanner sc) {
         //Creamos el menu
         Menu<OpcionesSubMenu> subMenuGestionFicheros = new Menu<OpcionesSubMenu>("Gestion de ficheros", OpcionesSubMenu.values());
 
@@ -152,12 +152,13 @@ public class ReproductorUB1 {
 
     }
 
+
     /**
      * El siguiente metedo agregarFicheros se encarga de elegir el tipo de archivo que se agrega y en donde (repo o port)
      *
      * @param sc objeto tipo Scanner que servira para que el usuario entre por teclado las opciones del menu
      */
-    public void agregarFicherosMult(Scanner sc) {
+    private void agregarFicherosMult(Scanner sc) {
         //Creamos el menu
         Menu<OpcionesSubMenu_AFEGIR_FITXER_MULTIMEDIA> subMenuAgregarFichero = new Menu<OpcionesSubMenu_AFEGIR_FITXER_MULTIMEDIA>("Agregar Ficheros", OpcionesSubMenu_AFEGIR_FITXER_MULTIMEDIA.values());
 
