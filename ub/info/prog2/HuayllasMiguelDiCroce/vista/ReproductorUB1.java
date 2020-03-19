@@ -14,8 +14,7 @@ import java.util.Scanner;
  * @author Miguel Huayllas and Luca Eric Di Croce
  */
 public class ReproductorUB1 {
-    //Dades datos;
-    //Menu menu;
+    //Controlador control;      //A esta variable se le delagara el control
 
     /**
      * Definicion de las variables del menu principal
