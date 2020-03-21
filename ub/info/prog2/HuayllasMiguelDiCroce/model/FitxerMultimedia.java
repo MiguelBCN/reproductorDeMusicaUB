@@ -37,9 +37,18 @@ public abstract class FitxerMultimedia extends File implements InFile {
         super(path);
         this.author = author;
     }
-    protected FitxerMultimedia (String cami, String nom, String codec, float durada, Motor motor){
+    protected FitxerMultimedia (String cami, String nom, String codec, Motor motor){
         super(cami);
         this.author=nom;
+        this.codec=codec;
+        this.motor=motor;
+
+    }
+    protected FitxerMultimedia (String cami, String codec, Motor motor){
+        super(cami);
+        this.author="Desconocido";
+        this.codec=codec;
+        this.motor=motor;
 
     }
     public abstract void reproduir() throws ReproException;

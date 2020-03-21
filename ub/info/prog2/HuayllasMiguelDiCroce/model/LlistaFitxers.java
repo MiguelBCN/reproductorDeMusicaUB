@@ -2,6 +2,7 @@ package ub.info.prog2.HuayllasMiguelDiCroce.model;
 
 import ub.info.prog2.utils.InFileList;
 
+import java.util.List;
 import java.util.Scanner;
 import java.io.File;
 import java.io.Serializable;
@@ -130,6 +131,13 @@ public class LlistaFitxers implements InFileList, Serializable {
      */
     public String toString() {
         return "You shoudn't have seen this message!!";
+    }
+    public List<String> mostrar(){
+        List <String> returnStrings = new ArrayList <String>();
+        for (int i = 0; i < this.getSize(); i++) {
+            returnStrings.add(this.getAt(i).toString());
+        }
+        return returnStrings;
     }
 }
 

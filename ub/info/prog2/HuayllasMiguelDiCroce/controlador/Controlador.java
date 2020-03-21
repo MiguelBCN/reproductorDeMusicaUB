@@ -1,11 +1,31 @@
 package ub.info.prog2.HuayllasMiguelDiCroce.controlador;
 
+import ub.info.prog2.HuayllasMiguelDiCroce.model.Dades;
 import ub.info.prog2.utils.InControlador;
 import ub.info.prog2.utils.ReproException;
 
 import java.util.List;
 
+
+
 public class Controlador implements InControlador {
+    /**
+     * Atributos de la clase Controlador
+     */
+    private Dades model;
+    private final Motor reproductor;
+
+
+    /**
+     * Constructor de la clase Controlador
+     */
+    public Controlador() {
+
+        this.model = new Dades();
+        this.reproductor = new Motor();
+    }
+
+
     @Override
     public void addAudio(String s, String s1, String s2, String s3, int i) throws ReproException {
 
@@ -18,7 +38,7 @@ public class Controlador implements InControlador {
 
     @Override
     public List<String> showRepositori() {
-        return null;
+        return model.showRepositori();
     }
 
     @Override
@@ -70,5 +90,4 @@ public class Controlador implements InControlador {
     public void removeFitxer(String s, int i) throws ReproException {
 
     }
-    //Esta
 }
