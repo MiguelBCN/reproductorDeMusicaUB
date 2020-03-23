@@ -4,6 +4,8 @@ import ub.info.prog2.HuayllasMiguelDiCroce.model.Dades;
 import ub.info.prog2.utils.InControlador;
 import ub.info.prog2.utils.ReproException;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 
@@ -47,17 +49,26 @@ public class Controlador implements InControlador {
     }
 
     @Override
-    public void saveDades(String s) throws ReproException {
+    public void saveDades(String ruta) throws ReproException {
+        try {
+            model.saveDates(ruta);
 
+        }catch (ReproException | IOException e){
+            System.out.println(e.getMessage());
+        }
     }
 
     @Override
-    public void loadDades(String s) throws ReproException {
+    public void loadDades(String ruta) throws ReproException {
+        model.loadDates(ruta);
 
     }
 
     @Override
     public void addPortafoli(String s) throws ReproException {
+
+    }
+    public void addPortafoli(String s,int size) throws ReproException {
 
     }
 
