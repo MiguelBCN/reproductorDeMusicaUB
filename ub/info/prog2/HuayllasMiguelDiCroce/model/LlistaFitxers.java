@@ -9,8 +9,8 @@ import ub.info.prog2.utils.ReproException;
 
 
 /**
- * Utilitzarem la classe LlistaFitxers per a extendre i organitzar la classe
- * ArrayList tal com la necessitem
+ * Usaremos esta clase para ir guardando ficheros ,esta clase se extendera a
+ * RepositoriFitxersMultimedia y PortafoliFitxersMultimedia
  * @author Miguel Huayllas and Luca Eric Di Croce
  */
 public class LlistaFitxers implements InFileList, Serializable {
@@ -77,6 +77,7 @@ public class LlistaFitxers implements InFileList, Serializable {
      * @param file que es vol eliminar
      */
     public void removeFitxer(File file){
+
         ficheros.remove(file);
     }
 

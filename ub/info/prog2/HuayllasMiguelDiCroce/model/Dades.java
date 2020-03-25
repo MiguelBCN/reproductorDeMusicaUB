@@ -72,7 +72,7 @@ public class Dades implements Serializable {
             this.portafolios=((Dades) one).portafolios;
             ois.close();
             fis.close();
-        }catch (Exception e){
+        }catch (Exception  e){
             throw new ReproException(e.getMessage());
 
         }
@@ -90,10 +90,15 @@ public class Dades implements Serializable {
         } else {
             portafolios.add(new PortafoliFitxersMultimedia(nombre));
         }
-
-
     }
     //Aqui falta agregar otro addPortaolion que reciba como parametro el nombre y tamaño
+    public void addPortafoli(String nombre,int size) throws ReproException {
+        if (this.existPortafoli(nombre)) {
+            throw new ReproException("Ya existe el portafolio");
+        } else {
+            portafolios.add(new PortafoliFitxersMultimedia(nombre,size));
+        }
+    }
 
     /**
      * El metodo retorna una lista de los nombres de los portafolios
@@ -113,7 +118,7 @@ public class Dades implements Serializable {
      *
      * @param nombre
      */
-    private void removePortafoli(String nombre) {
+    public void removePortafoli(String nombre) {
         for (int i = 0; i < portafolios.size(); i++) {
             if (nombre.equals(portafolios.get(i).getName())) {
                 portafolios.remove(i);
@@ -127,7 +132,7 @@ public class Dades implements Serializable {
      * @param nombre El nombre del portafolio
      * @return Si el portafolio esta o no en la lista de protafolios
      */
-    private boolean existPortafoli(String nombre) {
+    public boolean existPortafoli(String nombre) {
         boolean existe = false;
         for (int i = 0; i < portafolios.size() && !existe; i++) {
             if (nombre.equals(portafolios.get(i).getName())) {
@@ -161,7 +166,7 @@ public class Dades implements Serializable {
      * @param calidad
      * @throws ReproException
      */
-    private void addAudio(String ruta, String rutaImagen, String autor, String codec, int calidad) throws ReproException {
+    public void addAudio(String ruta, String rutaImagen, String autor, String codec, int calidad) throws ReproException {
         File ficheroImagen = new File(rutaImagen);
         Motor motor = new Motor();
         Audio audio = new Audio(ruta,ficheroImagen,autor,codec,calidad, motor);
@@ -178,7 +183,7 @@ public class Dades implements Serializable {
      * @param amplada
      * @throws ReproException
      */
-    private void addImatge(String ruta, String autor, String codec, int alcada, int amplada) throws ReproException {
+    public void addImatge(String ruta, String autor, String codec, int alcada, int amplada) throws ReproException {
         Motor motor = new Motor();
         Imatge imagen = new Imatge(ruta,autor,codec,alcada,amplada, motor);
         repositorio.addFileToRepositori(imagen);
@@ -191,7 +196,7 @@ public class Dades implements Serializable {
      * @param nombrePortafolio
      * @return
      */
-    private List<String> showPortafoli(String nombrePortafolio) {
+    public List<String> showPortafoli(String nombrePortafolio) {
         List<String> returnStrings = new ArrayList<String>();
         for (int i = 0; i < this.portafolios.size(); i++) {
             if (nombrePortafolio.equals(portafolios.get(i).getName())) {
@@ -205,14 +210,17 @@ public class Dades implements Serializable {
      * Eliminara un fichero de un portafolio
      *
      * @param nombrePortafolio
-     * @param posRepositorio
+     * @param posPortafolio
      */
-    private void removeFitxer(String nombrePortafolio, int posRepositorio) {
+    public void removeFitxer(String nombrePortafolio, int posPortafolio) {
         for (int i = 0; i < this.portafolios.size(); i++) {
             if (nombrePortafolio.equals(portafolios.get(i).getName())) {
-                //portafolios.get(i).removeFitxer(posRepositorio);
+                //con esto obtenemos el portafolio , ahora vamos
+                portafolios.get(i).removeFitxer(portafolios.get(i).getAt(posPortafolio));
             }
         }
+        //Luego habrab que comprovar si hay otro igual
+        // Si no lo hay tambien eliminaremos del repositorio
 
     }
 
@@ -222,10 +230,11 @@ public class Dades implements Serializable {
      * @param posFichero
      */
     //Que busque tambien por author
-    private void removeFitxer(int posFichero) {
-//        for (int j = 0; j < this.repositorio.getSize(); j++)
-//            this.repositorio.removeFitxer(posFichero);
-   }
+    public void removeFitxer(int posFichero) {
+           this.repositorio.removeFitxer(this.repositorio.getAt(posFichero));
+           //Buscaremos de este todas las copias en los repositorios
+
+    }
 
 
 }

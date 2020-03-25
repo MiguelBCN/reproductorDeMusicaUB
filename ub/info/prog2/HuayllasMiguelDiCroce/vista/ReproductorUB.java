@@ -5,7 +5,9 @@ import ub.info.prog2.utils.ReproException;
 
 import java.io.*;
 import java.util.Scanner;
+
 import ub.info.prog2.HuayllasMiguelDiCroce.controlador.Controlador;
+
 /**
  * Utilitzarem la classe ReproductorUB1 com a base per a cridar altres metodes
  * i executar el codi
@@ -13,7 +15,7 @@ import ub.info.prog2.HuayllasMiguelDiCroce.controlador.Controlador;
  * @author Miguel Huayllas and Luca Eric Di Croce
  */
 public class ReproductorUB {
-    Controlador control;      //A esta variable se le delagara el control
+    Controlador control;      //A esta variable se le delegara el control
 
     /**
      * Definicion de las variables del menu principal
@@ -57,7 +59,15 @@ public class ReproductorUB {
     static private String[] descOpcionesSubMenu_AFEGIR_FITXER_MULTIMEDIA = {"Agregar fichero de audio", "Agregar fichero de imagen", "Menu anterior"};
 
     /**
+     * Cosntructor de ReproductorUB
+     */
+    public ReproductorUB() {
+        control = new Controlador();
+    }
+
+    /**
      * El siguiente metedo se encarga de las principales opciones del menu
+     *
      * @param sc objeto tipo Scanner que servira para que el usuario entre por teclado las opciones del menu
      */
     public void gestioReproductorUB(Scanner sc) {
@@ -83,11 +93,23 @@ public class ReproductorUB {
                     break;
                 case GUARDAR_DATOS:
                     //Guardamos los datos , aca llamamos a datos.guardar()
+
                     System.out.println("Entraste a Guardar datos");
+                    System.out.println("Introduce la ruta:");
+                    try {
+                        control.saveDades(sc.nextLine());
+                    } catch (ReproException e) {
+                        e.printStackTrace();
+                    }
                     break;
                 case RECUPERAR_DATOS:
                     //Recuperamos  los datos , aca llamamos a datos.guardar()
-                    System.out.println("Entraste a Recuperar datos");
+                    System.out.println("Entraste a Recuperar datos:");
+                    try {
+                        control.loadDades(sc.nextLine());
+                    } catch (ReproException e) {
+                        e.printStackTrace();
+                    }
                     break;
                 case SALIR:
                     System.out.println("Hasta la vista :smile:");
@@ -122,98 +144,136 @@ public class ReproductorUB {
             opcion1_1 = subMenuGestionFicheros.getOpcio(sc);
             switch (opcion1_1) {
                 case CREAR_PORTAFOLIO:
-                    String answer = sc.nextLine();
+                    String answer = null;
                     int size = 100;
+                    String opci;
                     System.out.println("Com voleu que es digui?");
                     answer = sc.nextLine();
                     System.out.println("Voleu definir el tamany? Y/N");
-                    if (answer=="Y"||answer=="y"){
+                    opci=sc.nextLine();
+                    if (opci.equals("Y") || opci.equals("y")) {
                         System.out.println("Quin tamany voleu que tingui?");
                         size = sc.nextInt();
-                        try{
+                        try {
                             control.addPortafoli(answer, size);
-                        }catch(ReproException e){ //Por si el nombre ya esta ocupado (el portafoli tiene un metodo llamado getName) o (ya implementado) si el autorno encaja
+                        } catch (ReproException e) { //Por si el nombre ya esta ocupado (el portafoli tiene un metodo llamado getName) o (ya implementado) si el autorno encaja
                             System.out.println(e.getMessage());
                         }
 
-                    }
-                    else{
+                    } else {
                         System.out.println("El portafoli tindra tamany 100");
-                        try{
+                        try {
                             control.addPortafoli(answer);
-                        }catch(ReproException e){ //Por si el nombre ya esta ocupado (el portafoli tiene un metodo llamado getName) o (ya implementado) si el autorno encaja
+                        } catch (ReproException e) { //Por si el nombre ya esta ocupado (el portafoli tiene un metodo llamado getName) o (ya implementado) si el autorno encaja
                             System.out.println(e.getMessage());
                         }
                     }
                     break;
                 case MOSTRAR_PORTAFOLIO:
                     //System.out.println(controlador.printPortafolios()); Solo habremos de loopear por la lista de portafolios guardados en data e imprimirlos con indices
+                    System.out.println(control.showPortafolis());
                     break;
                 case ELIMINAR_PORTAFOLIO:
                     System.out.println("Has entrado en eliminar portfolio");
-                    //System.out.println(controlador.printPortafolios());
+                    System.out.println("Aqui tienes una lista de los nombres de los portafolios disponibles");
+                    System.out.println(control.showPortafolis());
                     System.out.println("Quin es el nom del portafoli que voleu eliminar?");
                     String nameOfPortafoli = sc.nextLine();
-                    try{
+                    try {
                         control.removePortafoli(nameOfPortafoli);
-                    }catch (ReproException e){
+                    } catch (ReproException e) {
                         System.out.println(e.getMessage());
                     }
                     break;
                 case AFEGIR_FITXER_MULTIMEDIA:
+
+                    int opcion, posRepo;
+                    String nombrePortafolio;
+
                     System.out.println("Has entrado en Agregar Fichero");
-                    /*ADD THE OPTION TO ADD TO THE PORTAFOLI PLS.
-                    When you do, add this:
-                    for(int x = 0; x<control.showPortafolis().size(); x++)
-                        System.out.println(control.showPortafolis().get(x)+"\n"); //Loopear e indexar la lista de portafolis                    }
-                    System.out.println("Com es diu el portafoli on vols afegir el fitxer?");
-                    String namePortafoli = sc.nextLine();
-                    try{
-                        for(int x = 0; x<control.showPortafoli(namePortafoli).size(); x++)
-                            System.out.println(control.showPortafoli(namePortafoli).get(x)+"\n"); //Loopear e indexar la lista de portafolis
-                    }catch(ReproException e){
-                        System.out.println(e.getMessage());
+                    System.out.println("Deseas agregar el fichero en:");
+                    System.out.println("1)Repositorio");
+                    System.out.println("2)Portafolios");
+                    opcion = sc.nextInt();
+
+                    if (opcion == 1) {
+                        agregarFicherosMult(sc);
+                    } else if (opcion == 2) {
+
+                        System.out.println("Aqui tienes una lista de los portafolios disponibles,selecciona una por su nombre");
+                        System.out.println(control.showPortafolis());
+                        System.out.print("Opcion de portafolio: ");
+                        nombrePortafolio = sc.nextLine();
+                        System.out.println();
+
+                        System.out.println("Ahora selecciona del repositorio que archivo agregar elige el indice de tu archivo");
+                        System.out.println(control.showRepositori());
+                        System.out.print("Opcion de portafolio: ");
+                        posRepo = sc.nextInt();
+                        System.out.println("\n Agregando fichero...");
+                        try {
+                            control.addFitxer(nombrePortafolio, posRepo);
+                        } catch (ReproException e) {
+                            System.out.println(e.getMessage());
+                        }
+
+
+                    } else {
+                        System.out.println("La opcion introducida no es valida");
                     }
-                    System.out.println("Quin es el index del fitxer que vols afegir");
-                    int indexOfFitxer = sc.nextInt();
-                    try{
-                    control.addFitxer(namePortafoli, indexOfFitxer);
-                    }catch(ReproException e){
-                    System.out.println(e.getMessage());
-                    }
-                    */
-                    agregarFicherosMult(sc);
+
                     break;
                 case MOSTRAR_FITXERS:
                     System.out.println("Has entrado en Mostrat ficheros");
                     //System.out.println(control.printRepositori);
                     break;
-                case ELIMINAR_FITXERS_MULTIMEDIA:  //FALTA EL MENU
-                    System.out.println("Has entrado en eliminar ficheros multimedia");
-                    /* IF USER WANTS TO DELETE FILE FROM A CERTAIN PORTAFOLI
-                    System.out.println(control.printLlistaDePortafolis); Loopear e indexar la lista de portafolis
-                    System.out.println("Quin es el index del portafoli on vhi ha el fitxer a eliminar?");
-                    answer2 = sc.nextInt();
-                    System.out.println(control.printElementsOfPortafoli); Se imprime los elementos del portafoli. Utliza los metodos getName() y getAuthor()
-                    System.out.println("Quin es el index del fitxer que vol eliminar?");
-                    answer3 = sc.nextInt();
-                    try{
-                    control.deleteFileFromPortafoli(answer2, answer3);
-                    }catch(ReproException e){
-                    System.out.println(e.getMessage());
-                    }
+                case ELIMINAR_FITXERS_MULTIMEDIA:
+
+                    int opcion2, posRepo2, posPortafolio;
+                    String nombrePortafolio2;
+
+                    System.out.println("Has entrado en eliminar Fichero");
+                    System.out.println("Deseas eliminar el fichero en:");
+                    System.out.println("1)Repositorio");
+                    System.out.println("2)Portafolios");
+                    opcion2 = sc.nextInt();
+
+                    if (opcion2 == 1) {
+                        System.out.println("Aqui tienes una lista de los archivos en repositorio selecciona una por su posicion");
+                        System.out.println(control.showRepositori());
+                        System.out.print("Cual deseas eliminar del repositorio: ");
+                        posRepo2 = sc.nextInt();
+                        System.out.println();
+                        System.out.println("\n Eliminando fichero...");
+                        try {
+                            control.removeFitxer(posRepo2);
+                        } catch (ReproException e) {
+                            System.out.println(e.getMessage());
+                        }
+
+                    } else if (opcion2 == 2) {
+
+                        System.out.println("Aqui tienes una lista de los portafolios disponibles,selecciona una por su nombre");
+                        System.out.println(control.showPortafolis());
+                        System.out.print("Opcion de portafolio: ");
+                        nombrePortafolio2 = sc.nextLine();
+                        System.out.println();
+
+                        System.out.println("Ahora selecciona del portafolio  que archivo eliminar elige el indice de tu archivo");
+                        System.out.println(control.showPortafoli(nombrePortafolio2));
+                        System.out.print("Opcion de portafolio: ");
+                        posPortafolio = sc.nextInt();
+                        System.out.println("\n Eliminando fichero...");
+                        try {
+                            control.removeFitxer(nombrePortafolio2, posPortafolio);
+                        } catch (ReproException e) {
+                            System.out.println(e.getMessage());
+                        }
 
 
-                    IF THE USER WANTS TO DELETE A FILE FROM THE REPOSITORI
-                    System.out.println(control.printRepositori);
-                    System.out.println("Quin es el index del fitxer que vols eliminar");
-                    answer2 = sc.nextInt();
-                    try{
-                    control.deleteFile(answer2); //HABRAS DE LOOPEAR POR TODOS LOS PORTAFOLIS PARA COMPROBAR SI TIENEN EL FILE Y BORRARLO
-                    }catch(ReproException e){
-                    System.out.println(e.getMessage());
+                    } else {
+                        System.out.println("La opcion introducida no es valida");
                     }
-                    */
                     break;
                 case MENU_ANTERIOR:
                     System.out.println("Has entrado en menu anterior");
@@ -250,6 +310,7 @@ public class ReproductorUB {
                 case AGREGAR_AUDIO:
                     char temp;
                     String cami, autor, codec;
+                    String pathImatge = null;
                     File fitxerImatge = null;
                     int kbps;
                     System.out.println("Quin es el path del audio que voleu "
@@ -258,13 +319,13 @@ public class ReproductorUB {
                     System.out.println("Voleu afegir una imatge com a caratula "
                             + "per el audio?");
                     temp = sc.nextLine().charAt(0);
-                    if(temp=='Y'||temp=='Y'){
-                        /*Todo esto puede ser un metodo*/
-                        String path, author, codec1;
+                    if (temp == 'y' || temp == 'Y') {
+
+                        String author, codec1;
                         int alcada, amplada;
                         System.out.println("Quin es el path de la imatge que voleu "
                                 + "afegir?");
-                        path = sc.nextLine();
+                        pathImatge = sc.nextLine();
                         System.out.println("Com es diu l'autor de la imatge que "
                                 + "voleu afegir?");
                         author = sc.nextLine();
@@ -277,12 +338,12 @@ public class ReproductorUB {
                         System.out.println("Quina amplada te la imatge que voleu "
                                 + "afegir?");
                         amplada = sc.nextInt();
-                        try{
-                            control.addImatge(path, author, codec1, alcada, amplada);
-                        }catch(ReproException e){
+                        try {
+                            control.addImatge(pathImatge, author, codec1, alcada, amplada);
+                        } catch (ReproException e) {
                             System.out.println(e.getMessage());
                         }
-                    }else
+                    } else
                         fitxerImatge = new File("ADD HARCODED PATH HERE");
                     System.out.println("Com es diu l'autor del file que voleu "
                             + "afegir?");
@@ -293,9 +354,9 @@ public class ReproductorUB {
                     System.out.println("Quants kbps te el audio que voleu "
                             + "afegir?");
                     kbps = sc.nextInt();
-                    try{
-                        control.addAudio(cami, "fitxerImatge", autor, codec, kbps);  //We need to convert this image into a string. Any ideas?
-                    }catch(ReproException e){
+                    try {
+                        control.addAudio(cami, pathImatge, autor, codec, kbps);  //We need to convert this image into a string. Any ideas?
+                    } catch (ReproException e) {
                         System.out.println(e.getMessage());
                     }
                     break;
@@ -317,9 +378,9 @@ public class ReproductorUB {
                             + "afegir?");
                     amplada = sc.nextInt();
 
-                    try{
+                    try {
                         control.addImatge(cami, autor, codec, alcada, amplada);
-                    }catch (ReproException e){
+                    } catch (ReproException e) {
                         System.out.println(e.getMessage());
                     }
                     break;
@@ -332,23 +393,5 @@ public class ReproductorUB {
         } while (opcion1_1_1 != OpcionesSubMenu_AFEGIR_FITXER_MULTIMEDIA.MENU_ANTERIOR);
     }
 
-
-
-
-
-
-    /*NOTA*/
-    //EL ejercio nos pide un repositorio minimo asi que ese ya esta inicializado , en cambio el portafolio no y ese no se limnita a uno
-
-        /*El reproductor tendrÃ¡ sÃ³lo un repositorio y un nÃºmero indeterminado de portafolios. los
-    portafolios quedarÃ¡n identificados por su tÃ­tulo, y por tanto, no podremos tener tÃ­tulos
-    repetidos. El usuario sÃ³lo podrÃ¡ aÃ±adir archivos al repositorio y aÃ±adir estos archivos a las
-    listas de los portafolios, tantas veces como quiera. Es decir, los archivos de los portafolios han
-    estar en el repositorio y no se pueden aÃ±adir directamente archivos a los portafolios si estos no
-    han sido aÃ±adidos previamente al repositorio.*/
-
-    /*DUDA POR CONTESTAR POR PARTE DEL PROFESOR*/
-    /*Y por ultimo ahora que tenemos la clase Dades que estarÃ¡ en el paquete controlador , entiendo que el manipulara el repositorio  y los portafolios ,
-    entonces la clase reproductorUB solo tendrÃ¡ una inicializacion a este objeto y la libreria menu para ir llamando a los mÃ©todos de la clase Dades no?*/
 }
 

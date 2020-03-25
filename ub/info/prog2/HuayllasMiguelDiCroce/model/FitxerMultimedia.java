@@ -8,18 +8,17 @@ import java.io.File;
 import java.util.Date;
 
 
-
 /**
- * Utilitzarem la classe FitxerMultimedia per a extendre la classe file, i
- * poder afegir els atributs i metodes necessaris per a aquesta entrega
+ * Usaremos la clase FitxerMultimedia como extension de la clase File y tambien esta misma sera una extension para
+ * las clase Audio e Imatge que seran los objetos que iremos guardando en la clases hijo de LlistaFitxers
+ * RepositoriFitxersMultimedia y PortafoliFitxersMultimedia
  *
  * @author Miguel Huayllas and Luca Eric Di Croce
  */
 public abstract class FitxerMultimedia extends File implements InFile {
-    String author;
-    String codec;
-    float durada;
-    Motor motor;
+    private String author;
+    private String codec;
+    private Motor motor;
 
     /**
      * @param path del file que es vol afegir
@@ -37,22 +36,44 @@ public abstract class FitxerMultimedia extends File implements InFile {
         super(path);
         this.author = author;
     }
-    protected FitxerMultimedia (String cami, String nom, String codec, Motor motor){
+
+    /**
+     * Constructor principal de la clase FitxerMultimedia ya que tiene todos los atributos a inicializar
+     *
+     * @param cami   Corresponde a la ruta del archivo
+     * @param author Corresponde al author del archivo
+     * @param codec  Tipo de archivo que es (.mp3,.jpg)
+     * @param motor
+     */
+    protected FitxerMultimedia(String cami, String author, String codec, Motor motor) {
         super(cami);
-        this.author=nom;
-        this.codec=codec;
-        this.motor=motor;
+        this.setAutor(author);
+        this.codec = codec;
+        this.motor = motor;
 
     }
-    protected FitxerMultimedia (String cami, String codec, Motor motor){
+
+    /**
+     * Constructor alternitivo que iniciliza el autor como "Desconocido"
+     *
+     * @param cami  Corresponde a la ruta del archivo
+     * @param codec Tipo de archivo que es (.mp3,.jpg)
+     * @param motor
+     */
+    protected FitxerMultimedia(String cami, String codec, Motor motor) {
         super(cami);
-        this.author="Desconocido";
-        this.codec=codec;
-        this.motor=motor;
+        this.author = "Desconocido";
+        this.codec = codec;
+        this.motor = motor;
 
     }
+
+    /**
+     * Metodo para reproducir el archivo
+     *
+     * @throws ReproException
+     */
     public abstract void reproduir() throws ReproException;
-
 
 
     /**
@@ -72,10 +93,12 @@ public abstract class FitxerMultimedia extends File implements InFile {
         return this.getAutor().equals(other.getAutor()) && super.equals(other);
     }
 
-    @Override
     /**
-     * return la data de la ultima modificaio feta al file
+     * Metodo que devuelve la ultima modificación del archivo
+     *
+     * @return devuelve la ultima modificación del archivo
      */
+    @Override
     public Date getUltimaModificacio() {
         Date lastMod = new Date(this.lastModified());
         return lastMod;
