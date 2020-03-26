@@ -150,7 +150,7 @@ public class ReproductorUB {
                     System.out.println("Com voleu que es digui?");
                     answer = sc.nextLine();
                     System.out.println("Voleu definir el tamany? Y/N");
-                    opci=sc.nextLine();
+                    opci = sc.nextLine();
                     if (opci.equals("Y") || opci.equals("y")) {
                         System.out.println("Quin tamany voleu que tingui?");
                         size = sc.nextInt();
@@ -202,15 +202,14 @@ public class ReproductorUB {
 
                         System.out.println("Aqui tienes una lista de los portafolios disponibles,selecciona una por su nombre");
                         System.out.println(control.showPortafolis());
-                        System.out.print("Opcion de portafolio: ");
-                        nombrePortafolio = sc.nextLine();
-                        System.out.println();
+                        System.out.println("Opcion de portafolio: ");
+                        nombrePortafolio = sc.next();
 
                         System.out.println("Ahora selecciona del repositorio que archivo agregar elige el indice de tu archivo");
                         System.out.println(control.showRepositori());
-                        System.out.print("Opcion de portafolio: ");
+                        System.out.println("Posicion del repositorio: ");
                         posRepo = sc.nextInt();
-                        System.out.println("\n Agregando fichero...");
+                        System.out.println(" Agregando fichero...");
                         try {
                             control.addFitxer(nombrePortafolio, posRepo);
                         } catch (ReproException e) {
@@ -225,12 +224,37 @@ public class ReproductorUB {
                     break;
                 case MOSTRAR_FITXERS:
                     System.out.println("Has entrado en Mostrat ficheros");
-                    //System.out.println(control.printRepositori);
+                    int opcion3;
+                    String nombrePortafolio2;
+                    System.out.println("Deseas agregar el fichero en:");
+                    System.out.println("1)Repositorio");
+                    System.out.println("2)Portafolios");
+                    opcion3 = sc.nextInt();
+                    if (opcion3 == 1) {
+                        System.out.println(control.showRepositori());
+
+                    } else if (opcion3 == 2) {
+                        System.out.println("Mostrando una lista con los nombres de los portafolios");
+                        System.out.println(control.showPortafolis());
+
+                        System.out.println("Escriba el nombre de uno de ellos para mostar sus archivos:");
+                        nombrePortafolio2 = sc.next();
+
+                        System.out.println("Mostrando el portafolio " + nombrePortafolio2);
+                        try {
+                            System.out.println(control.showPortafoli(nombrePortafolio2));
+                        } catch (ReproException e) {
+                            System.out.println(e.getMessage());
+                        }
+
+                    } else {
+                        System.out.println("La opcion introducida no es valida");
+                    }
                     break;
                 case ELIMINAR_FITXERS_MULTIMEDIA:
 
                     int opcion2, posRepo2, posPortafolio;
-                    String nombrePortafolio2;
+                    String nombrePortafolio3 = null;
 
                     System.out.println("Has entrado en eliminar Fichero");
                     System.out.println("Deseas eliminar el fichero en:");
@@ -256,16 +280,20 @@ public class ReproductorUB {
                         System.out.println("Aqui tienes una lista de los portafolios disponibles,selecciona una por su nombre");
                         System.out.println(control.showPortafolis());
                         System.out.print("Opcion de portafolio: ");
-                        nombrePortafolio2 = sc.nextLine();
+                        nombrePortafolio3 = sc.next();
                         System.out.println();
 
                         System.out.println("Ahora selecciona del portafolio  que archivo eliminar elige el indice de tu archivo");
-                        System.out.println(control.showPortafoli(nombrePortafolio2));
+                        try {
+                            System.out.println(control.showPortafoli(nombrePortafolio3));
+                        } catch (ReproException e) {
+                            System.out.println(e.getMessage());
+                        }
                         System.out.print("Opcion de portafolio: ");
                         posPortafolio = sc.nextInt();
                         System.out.println("\n Eliminando fichero...");
                         try {
-                            control.removeFitxer(nombrePortafolio2, posPortafolio);
+                            control.removeFitxer(nombrePortafolio3, posPortafolio);
                         } catch (ReproException e) {
                             System.out.println(e.getMessage());
                         }
@@ -310,8 +338,7 @@ public class ReproductorUB {
                 case AGREGAR_AUDIO:
                     char temp;
                     String cami, autor, codec;
-                    String pathImatge = null;
-                    File fitxerImatge = null;
+                    String pathImatge = "C:\\Users\\MiguelDesktop\\Documents\\reproductorDeMusicaUB\\iconMusic.jpg";
                     int kbps;
                     System.out.println("Quin es el path del audio que voleu "
                             + "afegir?");
@@ -344,9 +371,8 @@ public class ReproductorUB {
                             System.out.println(e.getMessage());
                         }
                     } else
-                        fitxerImatge = new File("ADD HARCODED PATH HERE");
-                    System.out.println("Com es diu l'autor del file que voleu "
-                            + "afegir?");
+                        System.out.println("Com es diu l'autor del file que voleu "
+                                + "afegir?");
                     autor = sc.nextLine();
                     System.out.println("Quin es el codec del audio que voleu "
                             + "afegir?");

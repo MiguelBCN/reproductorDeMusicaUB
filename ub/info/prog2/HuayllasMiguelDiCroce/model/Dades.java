@@ -43,12 +43,12 @@ public class Dades implements Serializable {
     public void saveDates(String ruta) throws ReproException, IOException {
         File fichero = new File(ruta);
         try {
-            FileOutputStream fos = new FileOutputStream(fichero) ;
+            FileOutputStream fos = new FileOutputStream(fichero);
             ObjectOutputStream ous = new ObjectOutputStream(fos);
             ous.writeObject(this);
             ous.close();
             fos.close();
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new ReproException(e.getMessage());
 
         }
@@ -60,19 +60,18 @@ public class Dades implements Serializable {
      *
      * @param ruta Elparametro s es la ruta donde se guardara
      */
-    public void loadDates(String ruta) throws ReproException {
+    public Dades loadDates(String ruta) throws ReproException {
         File fichero = new File(ruta);
         Object one;
         try {
-            FileInputStream fis = new FileInputStream(fichero) ;
+            FileInputStream fis = new FileInputStream(fichero);
             ObjectInputStream ois = new ObjectInputStream(fis);
-            one=ois.readObject();
-
-            this.repositorio= ((Dades) one).repositorio;
-            this.portafolios=((Dades) one).portafolios;
-            ois.close();
+            one = ois.readObject();
             fis.close();
-        }catch (Exception  e){
+            ois.close();
+
+            return (Dades) one;
+        } catch (Exception e) {
             throw new ReproException(e.getMessage());
 
         }
@@ -84,20 +83,19 @@ public class Dades implements Serializable {
      *
      * @param nombre Este parametro sera el atributo name de PortafoliFitxersMultimedia
      */
-    public void addPortafoli(String nombre) throws ReproException {
-        if (this.existPortafoli(nombre)) {
-            throw new ReproException("Ya existe el portafolio");
-        } else {
-            portafolios.add(new PortafoliFitxersMultimedia(nombre));
-        }
+    public void addPortafoli(String nombre) {
+
+        portafolios.add(new PortafoliFitxersMultimedia(nombre));
     }
-    //Aqui falta agregar otro addPortaolion que reciba como parametro el nombre y tamaño
-    public void addPortafoli(String nombre,int size) throws ReproException {
-        if (this.existPortafoli(nombre)) {
-            throw new ReproException("Ya existe el portafolio");
-        } else {
-            portafolios.add(new PortafoliFitxersMultimedia(nombre,size));
-        }
+
+    /**
+     * Este metodo agrega un portafolio a la lista
+     *
+     * @param nombre El nombre del portafolio
+     * @param size   El tamaño del portafolio
+     */
+    public void addPortafoli(String nombre, int size) {
+        portafolios.add(new PortafoliFitxersMultimedia(nombre, size));
     }
 
     /**
@@ -149,8 +147,8 @@ public class Dades implements Serializable {
      * @param posRepositorio
      */
     public void addFitxer(String nombrePortafolio, int posRepositorio) throws ReproException {
-        for (int i = 0; i <portafolios.size() ; i++) {
-            if(nombrePortafolio.equals(portafolios.get(i).getName())){
+        for (int i = 0; i < portafolios.size(); i++) {
+            if (nombrePortafolio.equals(portafolios.get(i).getName())) {
                 portafolios.get(i).addFitxer(repositorio.getAt(posRepositorio));
             }
 
@@ -159,6 +157,7 @@ public class Dades implements Serializable {
 
     /**
      * Este metodo agregara un Audio al repositorio
+     *
      * @param ruta
      * @param rutaImagen
      * @param autor
@@ -166,16 +165,16 @@ public class Dades implements Serializable {
      * @param calidad
      * @throws ReproException
      */
-    public void addAudio(String ruta, String rutaImagen, String autor, String codec, int calidad) throws ReproException {
+    public void addAudio(String ruta, String rutaImagen, String autor, String codec, int calidad, Motor reproductor) throws ReproException {
         File ficheroImagen = new File(rutaImagen);
-        Motor motor = new Motor();
-        Audio audio = new Audio(ruta,ficheroImagen,autor,codec,calidad, motor);
+        Audio audio = new Audio(ruta, ficheroImagen, autor, codec, calidad, reproductor);
         repositorio.addFileToRepositori(audio);
 
     }
 
     /**
      * Este metodo agregara una Imagen al repositorio
+     *
      * @param ruta
      * @param autor
      * @param codec
@@ -183,9 +182,9 @@ public class Dades implements Serializable {
      * @param amplada
      * @throws ReproException
      */
-    public void addImatge(String ruta, String autor, String codec, int alcada, int amplada) throws ReproException {
-        Motor motor = new Motor();
-        Imatge imagen = new Imatge(ruta,autor,codec,alcada,amplada, motor);
+    public void addImatge(String ruta, String autor, String codec, int alcada, int amplada, Motor reproductor) throws ReproException {
+
+        Imatge imagen = new Imatge(ruta, autor, codec, alcada, amplada, reproductor);
         repositorio.addFileToRepositori(imagen);
 
     }
@@ -231,8 +230,8 @@ public class Dades implements Serializable {
      */
     //Que busque tambien por author
     public void removeFitxer(int posFichero) {
-           this.repositorio.removeFitxer(this.repositorio.getAt(posFichero));
-           //Buscaremos de este todas las copias en los repositorios
+        this.repositorio.removeFitxer(this.repositorio.getAt(posFichero));
+        //Buscaremos de este todas las copias en los repositorios
 
     }
 
