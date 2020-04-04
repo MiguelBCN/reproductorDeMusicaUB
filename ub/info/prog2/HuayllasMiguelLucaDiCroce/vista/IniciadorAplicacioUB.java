@@ -1,4 +1,4 @@
-package ub.info.prog2.HuayllasMiguelDiCroce.vista;
+package ub.info.prog2.HuayllasMiguelLucaDiCroce.vista;
 
 import java.util.Scanner;
 

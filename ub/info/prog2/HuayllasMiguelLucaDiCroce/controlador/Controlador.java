@@ -1,6 +1,6 @@
-package ub.info.prog2.HuayllasMiguelDiCroce.controlador;
+package ub.info.prog2.HuayllasMiguelLucaDiCroce.controlador;
 
-import ub.info.prog2.HuayllasMiguelDiCroce.model.Dades;
+import ub.info.prog2.HuayllasMiguelLucaDiCroce.model.Dades;
 import ub.info.prog2.utils.InControlador;
 import ub.info.prog2.utils.ReproException;
 
@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * La siguiente clase controlador es el que hara las llamadas a Model->Dades  y este ultimo es el que gestiona las demas clases de modelo+
+ * La siguiente clase controlador es el que hara las llamadas a Model(Dades)  y este ultimo es el que gestiona las demas clases de modelo+
  * En esta clase se controlora que los parametros que se pasen no esten vacios
  */
 public class Controlador implements InControlador {
@@ -16,7 +16,7 @@ public class Controlador implements InControlador {
      * Atributos de la clase Controlador
      */
     private Dades model;                //Este es ela tributo de la clase que se encargara de la gestion de las clases de modelo
-    private final Motor reproductor;    //Este atributo se pasara cada vez que agreguemos un Audio o Imatge
+    private  Motor reproductor;    //Este atributo se pasara cada vez que agreguemos un Audio o Imatge
 
 
     /**
@@ -24,7 +24,15 @@ public class Controlador implements InControlador {
      */
     public Controlador() {
         this.model = new Dades();
-        this.reproductor = new Motor();
+
+        String rutaVLC = "C:\\Program Files\\VideoLAN\\VLC";
+        try {
+            this.reproductor=new Motor(rutaVLC);
+        } catch (Exception e) {
+
+        }
+
+
     }
 
     /**
@@ -227,6 +235,7 @@ public class Controlador implements InControlador {
 
     /**
      * El siguiente metodo eliminara un portafolio de la lista
+     *
      * @param nombre El nombre del portafolio que se eliminara
      * @throws ReproException Lanzara un error si el nombre introducido no existe
      */
@@ -241,18 +250,19 @@ public class Controlador implements InControlador {
 
     /**
      * El siguiente metodo eliminarara un fichero de un portafolio
+     *
      * @param nombrePortafolio Nombre del portafolio del cual eliminaremos un archivo
-     * @param posPortafolio Posicion del fichero en el portafolio donde vamos a eliminar
+     * @param posPortafolio    Posicion del fichero en el portafolio donde vamos a eliminar
      * @throws ReproException Lanzara un error si algun parametro es incorrecto
      */
     @Override
     public void removeFitxer(String nombrePortafolio, int posPortafolio) throws ReproException {
-        if(nombrePortafolio==null)
+        if (nombrePortafolio == null)
             throw new ReproException("El nombre del portafolio no puede estar vacio");
-        else if(!existPortafoli(nombrePortafolio))
-            throw  new ReproException("EL nombre introducido no corresponde a ningun portafolio");
-        else if(posPortafolio<0)
-            throw  new ReproException("La poscion del Portfolio no puede ser negativo");
+        else if (!existPortafoli(nombrePortafolio))
+            throw new ReproException("EL nombre introducido no corresponde a ningun portafolio");
+        else if (posPortafolio < 0)
+            throw new ReproException("La poscion del Portfolio no puede ser negativo");
 
         model.removeFitxer(nombrePortafolio, posPortafolio);
 
@@ -264,8 +274,9 @@ public class Controlador implements InControlador {
      */
     /**
      * Este metodo comprobara que un nombre existe en la lista de portafolios
+     *
      * @param nombre Nombre a comprobar en la lista
-     * @return  Dice si exsite o no en la lista
+     * @return Dice si exsite o no en la lista
      */
     @Override
     public boolean existPortafoli(String nombre) {

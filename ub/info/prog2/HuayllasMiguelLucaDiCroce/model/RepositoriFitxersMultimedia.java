@@ -3,21 +3,26 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ub.info.prog2.HuayllasMiguelDiCroce.model;
+package ub.info.prog2.HuayllasMiguelLucaDiCroce.model;
 
 import java.io.File;
 import java.util.List;
 import ub.info.prog2.utils.ReproException;
 
 /**
- *
- * @author Test
+ * La clase Repositorio guardara los archivos multimedia, esta lista no tiene limite pero los archivos agregados no pueden ser repetidos
+ * @author Luca Di Croce
  */
 public class RepositoriFitxersMultimedia extends LlistaFitxers {
     public RepositoriFitxersMultimedia (){
         super();
     }
 
+    /**
+     * Este metodo agregara fiheros a lista pero estos archivos no podran ser agregados si ya existen en la lista
+     * @param file El archivo a agregar
+     * @throws ReproException Lanzara un error si el archivo ya existe
+     */
     public void addFileToRepositori (File file)  throws ReproException{
         int temp = 0;
         boolean found = false;

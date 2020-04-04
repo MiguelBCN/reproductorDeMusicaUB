@@ -1,12 +1,11 @@
-package ub.info.prog2.HuayllasMiguelDiCroce.vista;
+package ub.info.prog2.HuayllasMiguelLucaDiCroce.vista;
 
 import ub.info.prog2.utils.Menu;
 import ub.info.prog2.utils.ReproException;
 
-import java.io.*;
 import java.util.Scanner;
 
-import ub.info.prog2.HuayllasMiguelDiCroce.controlador.Controlador;
+import ub.info.prog2.HuayllasMiguelLucaDiCroce.controlador.Controlador;
 
 /**
  * Utilitzarem la classe ReproductorUB1 com a base per a cridar altres metodes
@@ -63,6 +62,7 @@ public class ReproductorUB {
      */
     public ReproductorUB() {
         control = new Controlador();
+
     }
 
     /**
@@ -98,15 +98,18 @@ public class ReproductorUB {
                     System.out.println("Introduce la ruta:");
                     try {
                         control.saveDades(sc.nextLine());
+                        System.out.println("Se ha guardado con exito !");
                     } catch (ReproException e) {
                         e.printStackTrace();
                     }
                     break;
                 case RECUPERAR_DATOS:
                     //Recuperamos  los datos , aca llamamos a datos.guardar()
-                    System.out.println("Entraste a Recuperar datos:");
+                    System.out.println("Entraste a Recuperar datos");
+                    System.out.println("Introduce la ruta:");
                     try {
                         control.loadDades(sc.nextLine());
+                        System.out.println("Se ha cargado con exito del archivo !");
                     } catch (ReproException e) {
                         e.printStackTrace();
                     }
@@ -120,7 +123,6 @@ public class ReproductorUB {
         } while (opcion1 != OpcionesMenu.SALIR);
 
     }
-
 
     /**
      * El siguiente metedo gestion de ficheros se encargara de las principales funciones que involucran la manipulacion del repositorio y portfolios
@@ -145,7 +147,7 @@ public class ReproductorUB {
             switch (opcion1_1) {
                 case CREAR_PORTAFOLIO:
                     String answer = null;
-                    int size = 100;
+                    int size;
                     String opci;
                     System.out.println("Com voleu que es digui?");
                     answer = sc.nextLine();
@@ -171,16 +173,29 @@ public class ReproductorUB {
                     break;
                 case MOSTRAR_PORTAFOLIO:
                     //System.out.println(controlador.printPortafolios()); Solo habremos de loopear por la lista de portafolios guardados en data e imprimirlos con indices
-                    System.out.println(control.showPortafolis());
+                    if (control.showPortafolis().size() == 0) {
+                        System.out.println("No hay portafolios para mostrar");
+                    } else {
+                        for (int i = 0; i < control.showPortafolis().size(); i++) {
+                            System.out.println("Titulo " + i + 1 + ": " + control.showPortafolis().get(i));
+                        }
+                    }
                     break;
                 case ELIMINAR_PORTAFOLIO:
-                    System.out.println("Has entrado en eliminar portfolio");
-                    System.out.println("Aqui tienes una lista de los nombres de los portafolios disponibles");
-                    System.out.println(control.showPortafolis());
-                    System.out.println("Quin es el nom del portafoli que voleu eliminar?");
-                    String nameOfPortafoli = sc.nextLine();
                     try {
+                        if (control.showPortafolis().size() == 0)
+                            throw new ReproException("No hay portafolios creados para eliminar..");
+                        System.out.println("Has entrado en eliminar portfolio");
+                        System.out.println("Aqui tienes una lista de los nombres de los portafolios disponibles");
+
+                        for (int i = 0; i < control.showPortafolis().size(); i++) {
+                            System.out.println("Titulo " + i + 1 + ": " + control.showPortafolis().get(i));
+                        }
+                        System.out.println("Quin es el nom del portafoli que voleu eliminar?");
+                        String nameOfPortafoli = sc.nextLine();
                         control.removePortafoli(nameOfPortafoli);
+                        System.out.println("Se ha eliminado el archivo correctamente");
+
                     } catch (ReproException e) {
                         System.out.println(e.getMessage());
                     }
@@ -199,23 +214,30 @@ public class ReproductorUB {
                     if (opcion == 1) {
                         agregarFicherosMult(sc);
                     } else if (opcion == 2) {
-
-                        System.out.println("Aqui tienes una lista de los portafolios disponibles,selecciona una por su nombre");
-                        System.out.println(control.showPortafolis());
-                        System.out.println("Opcion de portafolio: ");
-                        nombrePortafolio = sc.next();
-
-                        System.out.println("Ahora selecciona del repositorio que archivo agregar elige el indice de tu archivo");
-                        System.out.println(control.showRepositori());
-                        System.out.println("Posicion del repositorio: ");
-                        posRepo = sc.nextInt();
-                        System.out.println(" Agregando fichero...");
                         try {
-                            control.addFitxer(nombrePortafolio, posRepo);
+                            if(control.showPortafolis().size()==0)
+                                throw new ReproException("No hay portafolios para agregar archivos");
+
+                            if (control.showRepositori().size() == 0)
+                                throw new ReproException("No hay ficheros en el Repositorio para agregara");
+
+                            System.out.println("Aqui tienes una lista de los portafolios disponibles,selecciona una por su nombre");
+                            for (int i = 0; i < control.showPortafolis().size(); i++) {
+                                System.out.println("Titulo " + i + 1 + ": " + control.showPortafolis().get(i));
+                            }
+                            System.out.println("Opcion de portafolio(nombre): ");
+                            nombrePortafolio = sc.next();
+
+                            System.out.println("Ahora selecciona del repositorio que archivo agregar elige el indice de tu archivo");
+                            System.out.println(control.showRepositori());
+                            System.out.println("Posicion del repositorio: ");
+                            posRepo = sc.nextInt();
+                            System.out.println(" Agregando fichero...");
+
+                            control.addFitxer(nombrePortafolio, posRepo-1 );
                         } catch (ReproException e) {
                             System.out.println(e.getMessage());
                         }
-
 
                     } else {
                         System.out.println("La opcion introducida no es valida");
@@ -231,17 +253,35 @@ public class ReproductorUB {
                     System.out.println("2)Portafolios");
                     opcion3 = sc.nextInt();
                     if (opcion3 == 1) {
-                        System.out.println(control.showRepositori());
+                        try {
+                            if (control.showRepositori().size() == 0)
+                                throw new ReproException("No hay archivos en el repositorio..");
+
+                                for (int i = 0; i < control.showRepositori().size(); i++) {
+                                    System.out.println(control.showRepositori().get(i));
+                                }
+
+                        } catch (ReproException e) {
+                            System.out.println(e.getMessage());
+                        }
+
 
                     } else if (opcion3 == 2) {
-                        System.out.println("Mostrando una lista con los nombres de los portafolios");
-                        System.out.println(control.showPortafolis());
-
-                        System.out.println("Escriba el nombre de uno de ellos para mostar sus archivos:");
-                        nombrePortafolio2 = sc.next();
-
-                        System.out.println("Mostrando el portafolio " + nombrePortafolio2);
                         try {
+                            if (control.showPortafolis().size() == 0)
+                                throw new ReproException("No hay portafolios creados..");
+
+                            System.out.println("Mostrando una lista con los nombres de los portafolios");
+                            System.out.println(control.showPortafolis());
+                            for (int i = 0; i < control.showPortafolis().size(); i++) {
+                                System.out.println("Titulo " + i + 1 + ": " + control.showPortafolis().get(i));
+                            }
+
+                            System.out.println("Escriba el nombre de uno de ellos para mostar sus archivos:");
+                            nombrePortafolio2 = sc.next();
+
+                            System.out.println("Mostrando el portafolio " + nombrePortafolio2);
+
                             System.out.println(control.showPortafoli(nombrePortafolio2));
                         } catch (ReproException e) {
                             System.out.println(e.getMessage());
@@ -263,36 +303,48 @@ public class ReproductorUB {
                     opcion2 = sc.nextInt();
 
                     if (opcion2 == 1) {
-                        System.out.println("Aqui tienes una lista de los archivos en repositorio selecciona una por su posicion");
-                        System.out.println(control.showRepositori());
-                        System.out.print("Cual deseas eliminar del repositorio: ");
-                        posRepo2 = sc.nextInt();
-                        System.out.println();
-                        System.out.println("\n Eliminando fichero...");
                         try {
-                            control.removeFitxer(posRepo2);
+                            if (control.showRepositori().size() == 0)
+                                throw new ReproException("No hay archivos en el repositorio..");
+
+                            System.out.println("Aqui tienes una lista de los archivos en repositorio selecciona una por su posicion");
+                            for (int i = 0; i < control.showRepositori().size(); i++) {
+                                System.out.println(control.showRepositori().get(i));
+                            }
+                            System.out.print("Cual deseas eliminar del repositorio: ");
+                            posRepo2 = sc.nextInt();
+                            System.out.println();
+                            System.out.println("\n Eliminando fichero...");
+
+                            control.removeFitxer(posRepo2-1);
                         } catch (ReproException e) {
                             System.out.println(e.getMessage());
                         }
 
                     } else if (opcion2 == 2) {
-
-                        System.out.println("Aqui tienes una lista de los portafolios disponibles,selecciona una por su nombre");
-                        System.out.println(control.showPortafolis());
-                        System.out.print("Opcion de portafolio: ");
-                        nombrePortafolio3 = sc.next();
-                        System.out.println();
-
-                        System.out.println("Ahora selecciona del portafolio  que archivo eliminar elige el indice de tu archivo");
                         try {
+                            if (control.showRepositori().size() == 0)
+                                throw new ReproException("No hay archivos en el repositorio..");
+
+                            if (control.showPortafolis().size() == 0)
+                                throw new ReproException("No hay portafolios creados..");
+
+                            System.out.println("Aqui tienes una lista de los portafolios disponibles,selecciona una por su nombre");
+                            for (int i = 0; i < control.showPortafolis().size(); i++) {
+                                System.out.println("Titulo " + i + 1 + ": " + control.showPortafolis().get(i));
+                            }
+                            System.out.print("Opcion de portafolio: ");
+                            nombrePortafolio3 = sc.next();
+                            System.out.println();
+
+                            System.out.println("Ahora selecciona del portafolio  que archivo eliminar elige el indice de tu archivo");
+
                             System.out.println(control.showPortafoli(nombrePortafolio3));
-                        } catch (ReproException e) {
-                            System.out.println(e.getMessage());
-                        }
-                        System.out.print("Opcion de portafolio: ");
-                        posPortafolio = sc.nextInt();
-                        System.out.println("\n Eliminando fichero...");
-                        try {
+
+                            System.out.print("Opcion de portafolio: ");
+                            posPortafolio = sc.nextInt();
+                            System.out.println("\n Eliminando fichero...");
+
                             control.removeFitxer(nombrePortafolio3, posPortafolio);
                         } catch (ReproException e) {
                             System.out.println(e.getMessage());
@@ -344,7 +396,7 @@ public class ReproductorUB {
                             + "afegir?");
                     cami = sc.nextLine();
                     System.out.println("Voleu afegir una imatge com a caratula "
-                            + "per el audio?");
+                            + "per el audio(Y/N)?");
                     temp = sc.nextLine().charAt(0);
                     if (temp == 'y' || temp == 'Y') {
 

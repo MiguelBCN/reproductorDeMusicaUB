@@ -1,6 +1,6 @@
-package ub.info.prog2.HuayllasMiguelDiCroce.model;
+package ub.info.prog2.HuayllasMiguelLucaDiCroce.model;
 
-import ub.info.prog2.HuayllasMiguelDiCroce.controlador.Motor;
+import ub.info.prog2.HuayllasMiguelLucaDiCroce.controlador.Motor;
 import ub.info.prog2.utils.InFile;
 import ub.info.prog2.utils.ReproException;
 

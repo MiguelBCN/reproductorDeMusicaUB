@@ -1,12 +1,17 @@
-package ub.info.prog2.HuayllasMiguelDiCroce.model;
+package ub.info.prog2.HuayllasMiguelLucaDiCroce.model;
 
-import ub.info.prog2.HuayllasMiguelDiCroce.controlador.Motor;
+import ub.info.prog2.HuayllasMiguelLucaDiCroce.controlador.Motor;
 import ub.info.prog2.utils.ReproException;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * La clase Dades se encargara de gesstionar Repositorio y Portafolio , ademas de tener los metodos para guardarse y ser cargado a un arhcivo .dat
+ * @author Miguel Huayllas
+ */
 public class Dades implements Serializable {
 
     /**
@@ -19,20 +24,8 @@ public class Dades implements Serializable {
      * Constructor de Dades
      */
     public Dades() {
-
         repositorio = new RepositoriFitxersMultimedia();
         portafolios = new ArrayList<PortafoliFitxersMultimedia>();
-
-    }
-
-
-    /**
-     * Este metdo retorna en forma de lista el repositorio
-     *
-     * @return
-     */
-    public List<String> showRepositori() {
-        return repositorio.showRepositori();
     }
 
     /**
@@ -73,7 +66,6 @@ public class Dades implements Serializable {
             return (Dades) one;
         } catch (Exception e) {
             throw new ReproException(e.getMessage());
-
         }
 
     }
@@ -99,6 +91,15 @@ public class Dades implements Serializable {
     }
 
     /**
+     * Este metdo retorna en forma de lista el repositorio
+     *
+     * @return
+     */
+    public List<String> showRepositori() {
+        return repositorio.showRepositori();
+    }
+
+    /**
      * El metodo retorna una lista de los nombres de los portafolios
      *
      * @return
@@ -107,6 +108,22 @@ public class Dades implements Serializable {
         List<String> returnStrings = new ArrayList<String>();
         for (int i = 0; i < this.portafolios.size(); i++) {
             returnStrings.add(this.portafolios.get(i).name);
+        }
+        return returnStrings;
+    }
+
+    /**
+     * El siguiente metodo mostrara solo un portafolio
+     *
+     * @param nombrePortafolio
+     * @return
+     */
+    public List<String> showPortafoli(String nombrePortafolio) {
+        List<String> returnStrings = new ArrayList<String>();
+        for (int i = 0; i < this.portafolios.size(); i++) {
+            if (nombrePortafolio.equals(portafolios.get(i).getName())) {
+                returnStrings.add(this.portafolios.get(i).toString());
+            }
         }
         return returnStrings;
     }
@@ -190,22 +207,6 @@ public class Dades implements Serializable {
     }
 
     /**
-     * El siguiente metodo mostrara solo un portafolio
-     *
-     * @param nombrePortafolio
-     * @return
-     */
-    public List<String> showPortafoli(String nombrePortafolio) {
-        List<String> returnStrings = new ArrayList<String>();
-        for (int i = 0; i < this.portafolios.size(); i++) {
-            if (nombrePortafolio.equals(portafolios.get(i).getName())) {
-                returnStrings.add(this.portafolios.get(i).toString());
-            }
-        }
-        return returnStrings;
-    }
-
-    /**
      * Eliminara un fichero de un portafolio
      *
      * @param nombrePortafolio
@@ -218,8 +219,6 @@ public class Dades implements Serializable {
                 portafolios.get(i).removeFitxer(portafolios.get(i).getAt(posPortafolio));
             }
         }
-        //Luego habrab que comprovar si hay otro igual
-        // Si no lo hay tambien eliminaremos del repositorio
 
     }
 
@@ -230,8 +229,32 @@ public class Dades implements Serializable {
      */
     //Que busque tambien por author
     public void removeFitxer(int posFichero) {
+        FitxerMultimedia comodin;
+        //Primero buscaremos todas las copias hechas en los portafolios y los eliminaremos
+        comodin = (FitxerMultimedia) this.repositorio.getAt(posFichero);
+        //Buscamos en todos los portafolios
+        for (int i = 0; i < portafolios.size(); i++) {
+            //EScogemos el portafolio que tenga el mismo autor
+            if (portafolios.get(i).author == comodin.getAutor()) {
+                //Dentro de ese portafolio hacemos otra busqueda
+                for (int j = 0; j < portafolios.get(i).getSize(); j++) {
+                    //Esta  variable nos servira de alias para tratar con cada archivo dentro del portafolio
+                    FitxerMultimedia comodin2 = (FitxerMultimedia) portafolios.get(i).getAt(j);
+                    //Finalmente cogemos aquellos que tenga el mismo cami
+                    if (comodin.getCamiAbsolut() == comodin2.getCamiAbsolut()) {
+                        //Con tanto el portafolio y las posiciones que cumplan dicho criterio llamamos al metodo que elimina de de portafolios
+                        //La varible i servira para determinar el nombre dentro de la lista y la variable j para determinar las posiciones dentro del portafolio
+                        removeFitxer(portafolios.get(i).name,j);
+
+                    }
+
+                }
+            }
+
+        }
+
+        //Finalmemto eliminamos tambien el fichero del repositorio
         this.repositorio.removeFitxer(this.repositorio.getAt(posFichero));
-        //Buscaremos de este todas las copias en los repositorios
 
     }
 
