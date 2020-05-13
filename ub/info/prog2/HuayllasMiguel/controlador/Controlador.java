@@ -1,6 +1,6 @@
-package ub.info.prog2.HuayllasMiguelLucaDiCroce.controlador;
+package ub.info.prog2.HuayllasMiguel.controlador;
 
-import ub.info.prog2.HuayllasMiguelLucaDiCroce.model.Dades;
+import ub.info.prog2.HuayllasMiguel.model.Dades;
 import ub.info.prog2.utils.InControlador;
 import ub.info.prog2.utils.ReproException;
 
@@ -17,6 +17,7 @@ public class Controlador implements InControlador {
      */
     private Dades model;                //Este es ela tributo de la clase que se encargara de la gestion de las clases de modelo
     private  Motor reproductor;    //Este atributo se pasara cada vez que agreguemos un Audio o Imatge
+    private EscoltadorReproduccio reproductorListas;
 
 
     /**
@@ -24,10 +25,11 @@ public class Controlador implements InControlador {
      */
     public Controlador() {
         this.model = new Dades();
+        this.reproductorListas = new EscoltadorReproduccio();
 
         String rutaVLC = "C:\\Program Files\\VideoLAN\\VLC";
         try {
-            this.reproductor=new Motor(rutaVLC);
+            this.reproductor = new Motor(rutaVLC, reproductorListas);
         } catch (Exception e) {
 
         }
@@ -201,6 +203,12 @@ public class Controlador implements InControlador {
             throw new ReproException("La ruta no puede estar vacia");
         //Cargamos lo del archivo en nuestro actual model
         model = model.loadDates(ruta);
+        //Seteamos nel nuevo motor
+        model.setMotor(reproductor);
+        //Cargamos el ciclico y reverse de Dades
+        reproductorListas.reverso=model.getReverso();
+        reproductorListas.ciclico=model.getCiclico();
+
     }
 
     /**
@@ -267,11 +275,7 @@ public class Controlador implements InControlador {
         model.removeFitxer(nombrePortafolio, posPortafolio);
 
     }
-    /**
-     * El siguiente metodo comprobara que un nombre de portafolio excista en la ista de portafolio
-     * @param nombre El nombre a comprobar en la lista
-     * @return
-     */
+
     /**
      * Este metodo comprobara que un nombre existe en la lista de portafolios
      *
@@ -282,4 +286,130 @@ public class Controlador implements InControlador {
     public boolean existPortafoli(String nombre) {
         return model.existPortafoli(nombre);
     }
+
+    /**
+     * Este metodo se encargara de hacer un llamado al metodo reproducir un archivo del repositorio
+     *
+     * @param i La posicion del archivo en el repositorio
+     * @throws ReproException
+     */
+    @Override
+    public void playFitxer(int i) throws ReproException {
+        if (i < 0 || i > this.model.getRepositorio().getSize())
+            throw new ReproException("La posicion indicada " + i + " no existe en la lista");
+
+        this.openFinestraReproductor();
+        this.model.getRepositorio().goTo(i).reproduir();
+        // this.closeFinestraReproductor();
+
+
+    }
+
+    @Override
+    public void openFinestraReproductor() {
+        this.reproductor.open();
+
+    }
+
+    @Override
+    public void closeFinestraReproductor() throws ReproException {
+        this.reproductor.close();
+
+    }
+
+    /**
+     * Este metodo se encarga de reproducir todos los elementos del repositorio
+     *
+     * @throws ReproException
+     */
+    @Override
+    public void playLlista() throws ReproException {
+        this.openFinestraReproductor();
+        reproductorListas.iniciarReproduccion(this.model.getRepositorio(), this.model.getCiclico(), this.model.getReverso());
+        //this.closeFinestraReproductor();
+
+    }
+
+    /**
+     * ESte metodo se encarga de reproducir todos los elementos de un portafolio
+     *
+     * @param s indica el nombre del portafolio
+     * @throws ReproException
+     */
+    @Override
+    public void playLlista(String s) throws ReproException {
+        this.openFinestraReproductor();
+        reproductorListas.iniciarReproduccion(this.model.getPortafolio(s), this.model.getCiclico(), this.model.getReverso());
+        //this.closeFinestraReproductor();
+    }
+
+    /**
+     * Resumen de un archivo pausado o parado
+     *
+     * @throws ReproException
+     */
+    @Override
+    public void resumeReproduccio() throws ReproException {
+        this.reproductor.resume();
+
+    }
+
+    /**
+     * Este metodo pausa la reproduccion de un archivo
+     *
+     * @throws ReproException
+     */
+    @Override
+    public void pauseReproduccio() throws ReproException {
+        this.reproductor.pause();
+
+    }
+
+    /**
+     * Este metodo para la reproduccion de un archivo
+     *
+     * @throws ReproException
+     */
+    @Override
+    public void stopReproduccio() throws ReproException {
+        this.reproductor.stop();
+    }
+
+    /**
+     * Este metodo pasara a la siguiente/anterior cancion
+     *
+     * @throws ReproException
+     */
+    @Override
+    public void jumpReproduccio() throws ReproException {
+        if (this.reproductorListas.hasNext())
+            this.reproductorListas.next();
+    }
+
+    /**
+     * Metodo que cambia la variable ciclico de Dades y Escoltador
+     */
+    public void cambioCiclico() {
+        this.model.setCiclico();
+        this.reproductorListas.ciclico = this.model.getCiclico();
+    }
+
+    /**
+     * Metodo que cambia la variable reverso de Dades y Escoltador
+     */
+    public void cambioReverso() {
+        this.model.setReverso();
+        this.reproductorListas.reverso = this.model.getReverso();
+    }
+
+    public boolean getCiclico() {
+        return this.model.getCiclico();
+    }
+
+    public boolean getReverso() {
+        return this.model.getReverso();
+    }
+
+
+
 }

@@ -1,4 +1,4 @@
-package ub.info.prog2.HuayllasMiguelLucaDiCroce.model;
+package ub.info.prog2.HuayllasMiguel.model;
 
 import java.util.List;
 
@@ -69,4 +69,5 @@ public class PortafoliFitxersMultimedia extends LlistaFitxers {
 
 
     }
+
 }

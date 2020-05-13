@@ -1,4 +1,4 @@
-package ub.info.prog2.HuayllasMiguelLucaDiCroce.model;
+package ub.info.prog2.HuayllasMiguel.model;
 
 import ub.info.prog2.utils.InFileList;
 
@@ -120,5 +120,6 @@ public class LlistaFitxers implements InFileList, Serializable {
             returnString.append(x + ". " + getAt(x));
         return returnString.toString();
     }
+    public FitxerMultimedia goTo(int i){return  (FitxerMultimedia) ficheros.get(i);}
 }
 

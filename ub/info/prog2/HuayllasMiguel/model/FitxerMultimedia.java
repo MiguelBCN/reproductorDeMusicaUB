@@ -1,6 +1,6 @@
-package ub.info.prog2.HuayllasMiguelLucaDiCroce.model;
+package ub.info.prog2.HuayllasMiguel.model;
 
-import ub.info.prog2.HuayllasMiguelLucaDiCroce.controlador.Motor;
+import ub.info.prog2.HuayllasMiguel.controlador.Motor;
 import ub.info.prog2.utils.InFile;
 import ub.info.prog2.utils.ReproException;
 
@@ -18,7 +18,7 @@ import java.util.Date;
 public abstract class FitxerMultimedia extends File implements InFile {
     private String author;
     private String codec;
-    private Motor motor;
+    public transient Motor motor;
 
     /**
      * @param path del file que es vol afegir

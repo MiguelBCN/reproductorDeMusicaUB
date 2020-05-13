@@ -1,6 +1,6 @@
-package ub.info.prog2.HuayllasMiguelLucaDiCroce.model;
+package ub.info.prog2.HuayllasMiguel.model;
 
-import ub.info.prog2.HuayllasMiguelLucaDiCroce.controlador.Motor;
+import ub.info.prog2.HuayllasMiguel.controlador.Motor;
 import ub.info.prog2.utils.ReproException;
 
 import java.io.File;
@@ -32,6 +32,8 @@ public class Audio extends FitxerMultimedia {
      */
     @Override
     public void reproduir() throws ReproException {
+
+        motor.reproducir(this,this.fitxerImatge);
 
 
     }

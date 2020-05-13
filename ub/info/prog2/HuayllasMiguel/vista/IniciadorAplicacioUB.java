@@ -1,15 +1,15 @@
-package ub.info.prog2.HuayllasMiguelLucaDiCroce.vista;
+package ub.info.prog2.HuayllasMiguel.vista;
 
 import java.util.Scanner;
 
 /**
  * Este sera el main desde el cual ejecutaremos nuestro proyecto
  *
- * @author Miguel Huayllas and Luca Eric Di Croce
+ * @author Miguel Huayllas
  */
 public class IniciadorAplicacioUB {
     /**
-     * El main llama a ReproductorUB que es el encargado de gestionar todo
+     * El main llama a ReproductorUB que es el encargado de gestionar el reproductor
      *
      * @param args
      */

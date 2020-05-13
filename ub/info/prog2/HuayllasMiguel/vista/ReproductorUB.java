@@ -1,15 +1,14 @@
-package ub.info.prog2.HuayllasMiguelLucaDiCroce.vista;
+package ub.info.prog2.HuayllasMiguel.vista;
 
 import ub.info.prog2.utils.Menu;
 import ub.info.prog2.utils.ReproException;
 
 import java.util.Scanner;
 
-import ub.info.prog2.HuayllasMiguelLucaDiCroce.controlador.Controlador;
+import ub.info.prog2.HuayllasMiguel.controlador.Controlador;
 
 /**
- * Utilitzarem la classe ReproductorUB1 com a base per a cridar altres metodes
- * i executar el codi
+ * La clase Reproductor se usara para llamar a los metodos de las clases en controlador y que se muestren por pantalla
  *
  * @author Miguel Huayllas and Luca Eric Di Croce
  */
@@ -17,17 +16,17 @@ public class ReproductorUB {
     Controlador control;      //A esta variable se le delegara el control
 
     /**
-     * Definicion de las variables del menu principal
+     * Declaracion de las variables del menu principal
      */
-    static private enum OpcionesMenu {GESTIO_FITXERS, GUARDAR_DATOS, RECUPERAR_DATOS, SALIR}
+    static private enum OpcionesMenu {GESTIO_FITXERS, CONTROL_REPRODUCCION_VISION, GUARDAR_DATOS, RECUPERAR_DATOS, SALIR}
 
     /**
-     * Declarem las descripciones de cada opcio del menu principal
+     * Definicion las descripciones del menu principal
      */
     static private String[] desOpcionesMenu = {
-            "Gestion de ficheros", "Guardar el contingut de la llista en un fitxer",
-            "Cargar una llista previamente guardada en un fitxer",
-            "Sortir de la aplicacio"
+            "Gestion de ficheros", "Control de Reproduccion y Visión", "Guardar el contenido de la lista en un fichero",
+            "Cargar una lista de un fichero previamente guardado",
+            "Salir de la aplicación"
     };
 
     /**
@@ -45,7 +44,8 @@ public class ReproductorUB {
             , "Agregar fichero multimedia (repositorio o portafolio)",
             "Mostrar fichero (repositorio o portafolio)",
             "Eliminar fichero multimedia (repositorio o portafolio)",
-            "Menu anterior"};
+            "Menu anterior"
+    };
 
     /**
      * Declaracion de la variables del submenu de AFEGIR_FITXER_MULTIMEDIA
@@ -56,6 +56,39 @@ public class ReproductorUB {
      * Descripcion de la variables del submenu de AFEGIR_FITXER_MULTIMEDIA
      */
     static private String[] descOpcionesSubMenu_AFEGIR_FITXER_MULTIMEDIA = {"Agregar fichero de audio", "Agregar fichero de imagen", "Menu anterior"};
+
+    /**
+     * Declaracion de las variables del sub menu CONTROL_REPRODUCCION_VISION
+     */
+    static private enum OpcionesControlReproduccionVision {REPRODUCIR_FICHERO_MULTIMEDIA, REPRODUCIR_REPOSITORIO, REPRODUCIR_PORTAFOLIO, REPRODUCCION_CICLICA, REPRODUCCION_REVERSA, GESTION_REPRODUCCION, MENU_ANTERIOR}
+
+    /**
+     * Descripcion del submenu CONTROL_REPRODUCCION_VISION
+     */
+    static private String[] descOpcionesControlReproduccionVision = {
+            "Permite reproducir un fichero multimedia del repositorio",
+            "Permite reproducir todos los ficheros del repositorio",
+            "Permite reproducir todos los ficheros de un portafolio",
+            "Activa o desactiva la reporduccion ciclica del repositorio o cualquier portafolio",
+            "Activa o desactiva la reporduccion en reversa del repositorio o cualquier portafolio",
+            "Abre un menu para la gestion de la reproduccion actual sea del repositorio o de un portafolio",
+            "Menu anterior"
+    };
+
+    /**
+     * Declaracion de las variables del submenu de GESTION_REPRODUCCION
+     */
+    static private enum OpcionesGestionReproduccion {REACTIVAR, PAUSA, PARAR, SALTA, SALIR}
+
+    /**
+     * Descripcion del submenu GESTION_REPRODUCCION
+     */
+    static private String[] descOpcionesGestionReproduccion = {
+            "Reactiva la reproduccion despues de una pausa o una parada",
+            "Pausa la reproduccion", "Para la reproduccion",
+            "Salta el fichero actual y pasar al siguiente/anterior fichero",
+            "Menu anterior"
+    };
 
     /**
      * Cosntructor de ReproductorUB
@@ -88,8 +121,12 @@ public class ReproductorUB {
             //Ejecutamos las opciones necesarias
             switch (opcion1) {
                 case GESTIO_FITXERS:
-                    ///Entramos al menu Gestion Ficheros
+                    //Entramos al menu Gestion Ficheros
                     gestionFicheros(sc);
+                    break;
+                case CONTROL_REPRODUCCION_VISION:
+                    //Entramos al menu Control Reproduccion y vision
+                    controlReproduccionVision(sc);
                     break;
                 case GUARDAR_DATOS:
                     //Guardamos los datos , aca llamamos a datos.guardar()
@@ -149,9 +186,9 @@ public class ReproductorUB {
                     String answer = null;
                     int size;
                     String opci;
-                    System.out.println("Com voleu que es digui?");
+                    System.out.println("Como quieres que se llame el portafolio?");
                     answer = sc.nextLine();
-                    System.out.println("Voleu definir el tamany? Y/N");
+                    System.out.println("Quieres definir un tamaño? Y/N");
                     opci = sc.nextLine();
                     if (opci.equals("Y") || opci.equals("y")) {
                         System.out.println("Quin tamany voleu que tingui?");
@@ -163,7 +200,7 @@ public class ReproductorUB {
                         }
 
                     } else {
-                        System.out.println("El portafoli tindra tamany 100");
+                        System.out.println("El portafolio tendra tamaño de 100");
                         try {
                             control.addPortafoli(answer);
                         } catch (ReproException e) { //Por si el nombre ya esta ocupado (el portafoli tiene un metodo llamado getName) o (ya implementado) si el autorno encaja
@@ -172,14 +209,7 @@ public class ReproductorUB {
                     }
                     break;
                 case MOSTRAR_PORTAFOLIO:
-                    //System.out.println(controlador.printPortafolios()); Solo habremos de loopear por la lista de portafolios guardados en data e imprimirlos con indices
-                    if (control.showPortafolis().size() == 0) {
-                        System.out.println("No hay portafolios para mostrar");
-                    } else {
-                        for (int i = 0; i < control.showPortafolis().size(); i++) {
-                            System.out.println("Titulo " + i + 1 + ": " + control.showPortafolis().get(i));
-                        }
-                    }
+                    listarPortafolios();
                     break;
                 case ELIMINAR_PORTAFOLIO:
                     try {
@@ -187,10 +217,7 @@ public class ReproductorUB {
                             throw new ReproException("No hay portafolios creados para eliminar..");
                         System.out.println("Has entrado en eliminar portfolio");
                         System.out.println("Aqui tienes una lista de los nombres de los portafolios disponibles");
-
-                        for (int i = 0; i < control.showPortafolis().size(); i++) {
-                            System.out.println("Titulo " + i + 1 + ": " + control.showPortafolis().get(i));
-                        }
+                        listarPortafolios();
                         System.out.println("Quin es el nom del portafoli que voleu eliminar?");
                         String nameOfPortafoli = sc.nextLine();
                         control.removePortafoli(nameOfPortafoli);
@@ -201,7 +228,6 @@ public class ReproductorUB {
                     }
                     break;
                 case AFEGIR_FITXER_MULTIMEDIA:
-
                     int opcion, posRepo;
                     String nombrePortafolio;
 
@@ -212,19 +238,18 @@ public class ReproductorUB {
                     opcion = sc.nextInt();
 
                     if (opcion == 1) {
+                        //Llamo al submenu encargado de esta opcion
                         agregarFicherosMult(sc);
                     } else if (opcion == 2) {
                         try {
-                            if(control.showPortafolis().size()==0)
+                            if (control.showPortafolis().size() == 0)
                                 throw new ReproException("No hay portafolios para agregar archivos");
 
                             if (control.showRepositori().size() == 0)
                                 throw new ReproException("No hay ficheros en el Repositorio para agregara");
 
                             System.out.println("Aqui tienes una lista de los portafolios disponibles,selecciona una por su nombre");
-                            for (int i = 0; i < control.showPortafolis().size(); i++) {
-                                System.out.println("Titulo " + i + 1 + ": " + control.showPortafolis().get(i));
-                            }
+                            listarPortafolios();
                             System.out.println("Opcion de portafolio(nombre): ");
                             nombrePortafolio = sc.next();
 
@@ -234,7 +259,7 @@ public class ReproductorUB {
                             posRepo = sc.nextInt();
                             System.out.println(" Agregando fichero...");
 
-                            control.addFitxer(nombrePortafolio, posRepo-1 );
+                            control.addFitxer(nombrePortafolio, posRepo - 1);
                         } catch (ReproException e) {
                             System.out.println(e.getMessage());
                         }
@@ -242,7 +267,6 @@ public class ReproductorUB {
                     } else {
                         System.out.println("La opcion introducida no es valida");
                     }
-
                     break;
                 case MOSTRAR_FITXERS:
                     System.out.println("Has entrado en Mostrat ficheros");
@@ -257,9 +281,7 @@ public class ReproductorUB {
                             if (control.showRepositori().size() == 0)
                                 throw new ReproException("No hay archivos en el repositorio..");
 
-                                for (int i = 0; i < control.showRepositori().size(); i++) {
-                                    System.out.println(control.showRepositori().get(i));
-                                }
+                            listarRepositorio();
 
                         } catch (ReproException e) {
                             System.out.println(e.getMessage());
@@ -272,11 +294,8 @@ public class ReproductorUB {
                                 throw new ReproException("No hay portafolios creados..");
 
                             System.out.println("Mostrando una lista con los nombres de los portafolios");
-                            System.out.println(control.showPortafolis());
-                            for (int i = 0; i < control.showPortafolis().size(); i++) {
-                                System.out.println("Titulo " + i + 1 + ": " + control.showPortafolis().get(i));
-                            }
-
+                            //System.out.println(control.showPortafolis());
+                            listarPortafolios();
                             System.out.println("Escriba el nombre de uno de ellos para mostar sus archivos:");
                             nombrePortafolio2 = sc.next();
 
@@ -308,15 +327,13 @@ public class ReproductorUB {
                                 throw new ReproException("No hay archivos en el repositorio..");
 
                             System.out.println("Aqui tienes una lista de los archivos en repositorio selecciona una por su posicion");
-                            for (int i = 0; i < control.showRepositori().size(); i++) {
-                                System.out.println(control.showRepositori().get(i));
-                            }
+                            listarRepositorio();
                             System.out.print("Cual deseas eliminar del repositorio: ");
                             posRepo2 = sc.nextInt();
                             System.out.println();
                             System.out.println("\n Eliminando fichero...");
 
-                            control.removeFitxer(posRepo2-1);
+                            control.removeFitxer(posRepo2 - 1);
                         } catch (ReproException e) {
                             System.out.println(e.getMessage());
                         }
@@ -330,9 +347,7 @@ public class ReproductorUB {
                                 throw new ReproException("No hay portafolios creados..");
 
                             System.out.println("Aqui tienes una lista de los portafolios disponibles,selecciona una por su nombre");
-                            for (int i = 0; i < control.showPortafolis().size(); i++) {
-                                System.out.println("Titulo " + i + 1 + ": " + control.showPortafolis().get(i));
-                            }
+                            listarPortafolios();
                             System.out.print("Opcion de portafolio: ");
                             nombrePortafolio3 = sc.next();
                             System.out.println();
@@ -469,6 +484,156 @@ public class ReproductorUB {
 
 
         } while (opcion1_1_1 != OpcionesSubMenu_AFEGIR_FITXER_MULTIMEDIA.MENU_ANTERIOR);
+    }
+
+    /**
+     * El siguiente metodo creara un menu pora gestion el control de la reproduccion y vision
+     *
+     * @param sc Este arguemnto sirve para las entradas por teclado del usuario
+     */
+    private void controlReproduccionVision(Scanner sc) {
+        //Creamos el menu
+        Menu<OpcionesControlReproduccionVision> submenuControlReproduccionVision = new Menu<OpcionesControlReproduccionVision>("Control Reproduccion y Visión", OpcionesControlReproduccionVision.values());
+        //Agregamos las descripciones de cada uno
+        submenuControlReproduccionVision.setDescripcions(descOpcionesControlReproduccionVision);
+        //Designamos el objeto que sera usado por el usuario para escoger las opciones
+        OpcionesControlReproduccionVision opcionControlReproVision = null;
+
+        do {
+            //Mostramos el menu
+            submenuControlReproduccionVision.mostrarMenu();
+            //Demandamos una opcion
+            opcionControlReproVision = submenuControlReproduccionVision.getOpcio(sc);
+            //Con el switch escogemos el caso de la opcion que queremos
+            switch (opcionControlReproVision) {
+                case REPRODUCIR_FICHERO_MULTIMEDIA:
+                    System.out.println("Reproducir fichero multimedia");
+                    int i;
+                    System.out.println("Selecciona el indice de la lista de ficheros del repositorio para reproducir");
+                    listarRepositorio();
+                    System.out.println("Indica tu opcion:");
+                    i = sc.nextInt();
+                    try {
+                        this.control.playFitxer(i-1);
+                    } catch (ReproException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case REPRODUCIR_REPOSITORIO:
+                    System.out.println("Reproducir repositorio");
+                    try {
+                        this.control.playLlista();
+                    } catch (ReproException e) {
+                        e.printStackTrace();
+                    }
+
+                    break;
+                case REPRODUCIR_PORTAFOLIO:
+                    String nombre;
+                    System.out.println("Reproducir portafolio");
+                    System.out.println("Por favor escriba el nombre del portafolio a reproducir de la siguiente lista");
+                    listarPortafolios();
+                    System.out.println("Indica tu opcion:");
+                    nombre = sc.nextLine();
+                    try {
+                        this.control.playLlista(nombre);
+                    } catch (ReproException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case REPRODUCCION_CICLICA:
+                    this.control.cambioCiclico();
+                    if(this.control.getCiclico())
+                        System.out.println("La Reproducir ciclica se ha encendido");
+                    else
+                        System.out.println("La Reproducir ciclica se ha apagado");
+                    break;
+                case REPRODUCCION_REVERSA:
+                    this.control.cambioReverso();
+                    if(this.control.getReverso())
+                        System.out.println("La Reproducir reversa se ha encendido");
+                    else
+                        System.out.println("La Reproducir reversa se ha apagado");
+                    break;
+                case GESTION_REPRODUCCION:
+                    //Aqui entramos el submenu de esta opcion
+                    gestionReroduccion(sc);
+                    break;
+
+            }
+        } while (opcionControlReproVision != OpcionesControlReproduccionVision.MENU_ANTERIOR);
+    }
+
+    private void gestionReroduccion(Scanner sc) {
+        //Creamos el menu
+        Menu<OpcionesGestionReproduccion> subMenuGestionReproduccion = new Menu<OpcionesGestionReproduccion>("Gestion de Reproduccion", OpcionesGestionReproduccion.values());
+
+        //Agregamos las descripciones de cada uno
+        subMenuGestionReproduccion.setDescripcions(descOpcionesGestionReproduccion);
+
+        //Designamos el objeto que sirve como opcion para cada menu
+        OpcionesGestionReproduccion opcionGestionReproduccion = null;
+
+        do {
+            //Mostrar el menu
+            subMenuGestionReproduccion.mostrarMenu();
+            //Demandar una opcion
+            opcionGestionReproduccion = subMenuGestionReproduccion.getOpcio(sc);
+            //Escoger el caso mas adecuado
+            switch (opcionGestionReproduccion) {
+                case REACTIVAR:
+                    System.out.println("Reactivar");
+                    try {
+                        this.control.resumeReproduccio();
+                    } catch (ReproException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case PAUSA:
+                    System.out.println("Pausa");
+                    try {
+                        this.control.pauseReproduccio();
+                    } catch (ReproException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case PARAR:
+                    System.out.println("Parar");
+                    try {
+                        this.control.stopReproduccio();
+                    } catch (ReproException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case SALTA:
+                    System.out.println("Saltar ");
+                    try {
+                        this.control.jumpReproduccio();
+                    } catch (ReproException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+            }
+
+        } while (opcionGestionReproduccion != OpcionesGestionReproduccion.SALIR);
+
+    }
+
+    private void listarRepositorio() {
+        for (int i = 0; i < control.showRepositori().size(); i++) {
+            System.out.println(control.showRepositori().get(i));
+        }
+    }
+
+    private void listarPortafolios() {
+        if (control.showPortafolis().size() == 0) {
+            System.out.println("No hay portafolios para mostrar");
+
+        } else {
+            for (int i = 0; i < control.showPortafolis().size(); i++) {
+                System.out.println("Titulo " + i + 1 + ": " + control.showPortafolis().get(i));
+            }
+        }
     }
 
 }

@@ -1,6 +1,7 @@
-package ub.info.prog2.HuayllasMiguelLucaDiCroce.model;
+package ub.info.prog2.HuayllasMiguel.model;
 
-import ub.info.prog2.HuayllasMiguelLucaDiCroce.controlador.Motor;
+import ub.info.prog2.HuayllasMiguel.controlador.EscoltadorReproduccio;
+import ub.info.prog2.HuayllasMiguel.controlador.Motor;
 import ub.info.prog2.utils.ReproException;
 
 import java.io.*;
@@ -10,6 +11,7 @@ import java.util.List;
 
 /**
  * La clase Dades se encargara de gesstionar Repositorio y Portafolio , ademas de tener los metodos para guardarse y ser cargado a un arhcivo .dat
+ *
  * @author Miguel Huayllas
  */
 public class Dades implements Serializable {
@@ -19,6 +21,8 @@ public class Dades implements Serializable {
      */
     private RepositoriFitxersMultimedia repositorio;
     private ArrayList<PortafoliFitxersMultimedia> portafolios;
+    private boolean ReproCiclica =false;
+    private boolean ReproReversa =false;
 
     /**
      * Constructor de Dades
@@ -62,6 +66,7 @@ public class Dades implements Serializable {
             one = ois.readObject();
             fis.close();
             ois.close();
+
 
             return (Dades) one;
         } catch (Exception e) {
@@ -244,7 +249,7 @@ public class Dades implements Serializable {
                     if (comodin.getCamiAbsolut() == comodin2.getCamiAbsolut()) {
                         //Con tanto el portafolio y las posiciones que cumplan dicho criterio llamamos al metodo que elimina de de portafolios
                         //La varible i servira para determinar el nombre dentro de la lista y la variable j para determinar las posiciones dentro del portafolio
-                        removeFitxer(portafolios.get(i).name,j);
+                        removeFitxer(portafolios.get(i).name, j);
 
                     }
 
@@ -257,6 +262,36 @@ public class Dades implements Serializable {
         this.repositorio.removeFitxer(this.repositorio.getAt(posFichero));
 
     }
+
+    public RepositoriFitxersMultimedia getRepositorio() {
+        return this.repositorio;
+    }
+
+    public PortafoliFitxersMultimedia getPortafolio(String nombre) {
+        PortafoliFitxersMultimedia obj = null;
+        for (int i = 0; i < this.portafolios.size(); i++) {
+            if (this.portafolios.get(i).getName().equals(nombre)) {
+                obj=this.portafolios.get(i);
+            }
+        }
+        return obj;
+
+    }
+    public boolean getCiclico(){return this.ReproCiclica;}
+    public boolean getReverso(){return this.ReproReversa;}
+
+    public void setCiclico(){ this.ReproCiclica=!this.ReproCiclica;}
+    public void setReverso(){this.ReproReversa=!this.ReproReversa;}
+    //Este metodo debero recibir un motor y luego pasar ese escoltador a los ficheros
+    public void setMotor(Motor motorNuevo){
+        //motorNuevo=new Motor("C:\\Program Files\\VideoLAN\\VLC",escolta);
+        //Seteo el motor nuevo a todos los ficheor del repositorio
+        for (int i = 0; i <this.getRepositorio().getSize() ; i++) {
+            this.getRepositorio().goTo(i).motor=motorNuevo;
+        }
+
+    }
+
 
 
 }

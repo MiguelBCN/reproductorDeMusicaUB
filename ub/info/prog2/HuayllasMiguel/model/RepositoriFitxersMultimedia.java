@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ub.info.prog2.HuayllasMiguelLucaDiCroce.model;
+package ub.info.prog2.HuayllasMiguel.model;
 
 import java.io.File;
 import java.util.List;
@@ -55,4 +55,6 @@ public class RepositoriFitxersMultimedia extends LlistaFitxers {
     public String toString(){
         return super.toString();
     }
+
+
 }
