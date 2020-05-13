@@ -11,4 +11,6 @@
 <ul>
 <li>Primera entrega</li>
 <li>https://github.com/MiguelBCN/reproductorDeMusicaUB/commit/596966dedaf325990d1d896ba4fa83c0f305fe1a</li>
+<li>Segujnda entrega</li>
+  <li>https://github.com/MiguelBCN/reproductorDeMusicaUB/commit/3cd7237c42a39cf6410f066ec1f0a614f9924991</li>
 </ul>
