@@ -291,7 +291,7 @@ public class Controlador implements InControlador {
      * Este metodo se encargara de hacer un llamado al metodo reproducir un archivo del repositorio
      *
      * @param i La posicion del archivo en el repositorio
-     * @throws ReproException
+     * @throws ReproException Si el archivo pasado tuviera un error
      */
     @Override
     public void playFitxer(int i) throws ReproException {
@@ -320,7 +320,7 @@ public class Controlador implements InControlador {
     /**
      * Este metodo se encarga de reproducir todos los elementos del repositorio
      *
-     * @throws ReproException
+     * @throws ReproException Si el repositori pasado tuviera un error
      */
     @Override
     public void playLlista() throws ReproException {
@@ -334,7 +334,7 @@ public class Controlador implements InControlador {
      * ESte metodo se encarga de reproducir todos los elementos de un portafolio
      *
      * @param s indica el nombre del portafolio
-     * @throws ReproException
+     * @throws ReproException Si el portafolio pasado tuviera algo mal
      */
     @Override
     public void playLlista(String s) throws ReproException {
@@ -346,7 +346,7 @@ public class Controlador implements InControlador {
     /**
      * Resumen de un archivo pausado o parado
      *
-     * @throws ReproException
+     * @throws ReproException Si VLC sale algo mal
      */
     @Override
     public void resumeReproduccio() throws ReproException {
@@ -357,7 +357,7 @@ public class Controlador implements InControlador {
     /**
      * Este metodo pausa la reproduccion de un archivo
      *
-     * @throws ReproException
+     * @throws ReproException Si VLC sale algo mal
      */
     @Override
     public void pauseReproduccio() throws ReproException {
@@ -368,7 +368,7 @@ public class Controlador implements InControlador {
     /**
      * Este metodo para la reproduccion de un archivo
      *
-     * @throws ReproException
+     * @throws ReproException Si VLC sale algo mal
      */
     @Override
     public void stopReproduccio() throws ReproException {
@@ -378,7 +378,7 @@ public class Controlador implements InControlador {
     /**
      * Este metodo pasara a la siguiente/anterior cancion
      *
-     * @throws ReproException
+     * @throws ReproException Si VLC sale algo mal
      */
     @Override
     public void jumpReproduccio() throws ReproException {

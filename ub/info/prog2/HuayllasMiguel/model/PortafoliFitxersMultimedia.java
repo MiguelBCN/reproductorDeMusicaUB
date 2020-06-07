@@ -42,7 +42,7 @@ public class PortafoliFitxersMultimedia extends LlistaFitxers {
      */
     public void addFileToPortafoli(FitxerMultimedia file) throws ReproException {
         if (super.getSize() > 0) {
-            if (file.getAutor() == author)
+            if (file.getAutor().equals(author))
                 super.addFitxer(file);
             else
                 throw new ReproException("Author not compatible\n");

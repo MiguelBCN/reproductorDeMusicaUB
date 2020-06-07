@@ -171,7 +171,7 @@ public class Dades implements Serializable {
     public void addFitxer(String nombrePortafolio, int posRepositorio) throws ReproException {
         for (int i = 0; i < portafolios.size(); i++) {
             if (nombrePortafolio.equals(portafolios.get(i).getName())) {
-                portafolios.get(i).addFitxer(repositorio.getAt(posRepositorio));
+                portafolios.get(i).addFileToPortafoli(repositorio.goTo(posRepositorio));
             }
 
         }

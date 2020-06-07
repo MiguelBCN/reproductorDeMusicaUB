@@ -26,10 +26,10 @@ public class EscoltadorReproduccio extends EscoltadorReproduccioBasic {
     /**
      * El siguiente elemento saltara al siguiente elemento a reproducir , aqui es necesario comprar los dos estados de reproduccion
      * Esto no da como resultado 4 estados:
-     * A Si Ciclico y Reverso esta activo -> Se reproducira al reves y al llegar al principio ira al final
-     * B Si Ciclico y Reverso estan apagados ->Se  reproducira la lista normalmente y al llegar al final la reproduccion parara
-     * C Si Ciclico esta activo y Reverso apagado -> Se reproduce normal y al llegar al final se vuelve a poner al principio
-     * D Si Ciclico esta apagado y Reverso activo -> SE reproduce al reves y al llegar al principio de la lista se parara
+     * A Si Ciclico y Reverso esta activo - Se reproducira al reves y al llegar al principio ira al final
+     * B Si Ciclico y Reverso estan apagados -Se  reproducira la lista normalmente y al llegar al final la reproduccion parara
+     * C Si Ciclico esta activo y Reverso apagado - Se reproduce normal y al llegar al final se vuelve a poner al principio
+     * D Si Ciclico esta apagado y Reverso activo - SE reproduce al reves y al llegar al principio de la lista se parara
      */
     @Override
     protected void next() {

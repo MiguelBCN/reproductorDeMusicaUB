@@ -15,7 +15,8 @@ public class IniciadorAplicacioUB {
      */
     public static void main(String[] args) {
         Scanner sc =new Scanner(System.in);
-        ReproductorUB repro = new ReproductorUB();
-        repro.gestioReproductorUB(sc);
+        //ReproductorUB repro = new ReproductorUB();
+        //repro.gestioReproductorUB(sc);
+       
     }
 }
